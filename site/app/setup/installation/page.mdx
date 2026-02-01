@@ -1,0 +1,195 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code Installation Verification',
+  description: 'Verify Claude Code installation, check version, and confirm CLI access.',
+}
+
+# Claude Code Installation Verification
+
+<TLDRBlock>
+Claude Code installs as a command-line tool accessible via the `claude code` command. Verify installation by running `claude code --version` to check the installed version. Configuration files are stored in `~/.claude/`. If the command is not found, check your PATH or consult official installation documentation.
+</TLDRBlock>
+
+## When This Applies
+
+Use this guide when:
+
+- Installing Claude Code for the first time and verifying it works
+- Troubleshooting "command not found" errors after installation
+- Confirming Claude Code is accessible from your terminal
+- Checking which version is installed on your system
+
+## Symptoms You'll See
+
+**When installation is successful:**
+
+```bash
+claude code --version
+# Output: Claude Code version X.X.X
+```
+
+The command returns version information without errors.
+
+**When installation has issues:**
+
+```bash
+claude code --version
+# Output: command not found: claude
+# or: zsh: command not found: claude
+# or: bash: claude: command not found
+```
+
+The shell cannot locate the Claude Code executable.
+
+## Likely Causes
+
+Installation verification fails when:
+
+- Claude Code has not been installed on the system
+- The installation directory is not in your shell's PATH
+- Installation completed but shell configuration has not been reloaded
+- Insufficient permissions to access the installed binary
+- Installation was interrupted or incomplete
+
+## Fix Sequence
+
+### 1. Check if Claude Code is Installed
+
+Verify the command is available:
+
+```bash
+claude code --version
+```
+
+**Verify**: Command returns version information. If this works, installation is confirmed.
+
+If command is not found, proceed to Step 2.
+
+### 2. Check PATH Configuration
+
+Verify if Claude Code binary exists but is not in PATH:
+
+**On macOS/Linux:**
+```bash
+which claude
+```
+
+**On Windows:**
+```cmd
+where claude
+```
+
+**Verify**: Command returns a file path to the Claude Code executable. If no path is returned, Claude Code may not be installed.
+
+### 3. Check Configuration Directory
+
+Confirm Claude Code configuration directory exists:
+
+```bash
+ls ~/.claude/
+```
+
+**Verify**: Directory exists and contains configuration files. If the directory does not exist, Claude Code has not been initialized.
+
+### 4. Test Basic Functionality
+
+Verify Claude Code responds to commands:
+
+```bash
+claude code --help
+```
+
+**Verify**: Command displays help information with available options and subcommands.
+
+### 5. Reload Shell Configuration
+
+If the binary exists but is not found, reload your shell:
+
+```bash
+source ~/.bashrc  # for bash
+source ~/.zshrc   # for zsh
+# or restart your terminal
+```
+
+**Verify**: Run `claude code --version` again to confirm the command is now accessible.
+
+## What NOT to Do
+
+**Don't modify the binary directly**: Changing permissions, moving, or editing the Claude Code binary can break functionality and prevent updates. Use standard installation methods only.
+
+**Don't install multiple versions simultaneously**: Having multiple Claude Code installations in different locations creates PATH conflicts and unpredictable behavior. Uninstall old versions before installing new ones.
+
+**Don't skip PATH configuration**: If the installation requires adding Claude Code to your PATH, skipping this step means the command won't be accessible from your terminal.
+
+**Don't run installation commands with insufficient permissions**: Installing system-wide tools may require elevated permissions. However, user-local installations typically do not. Follow the installation method's documented permission requirements.
+
+## Diagnostic Commands
+
+Check installed version:
+
+```bash
+claude code --version
+```
+
+Locate the Claude Code executable:
+
+```bash
+which claude  # macOS/Linux
+where claude  # Windows
+```
+
+Verify configuration directory exists:
+
+```bash
+ls ~/.claude/
+```
+
+Display available commands and options:
+
+```bash
+claude code --help
+```
+
+Check current PATH:
+
+```bash
+echo $PATH  # macOS/Linux
+echo %PATH%  # Windows
+```
+
+## Related Issues
+
+- [Statusline Setup](../statusline) - Configure terminal status display after installation
+- [Exit Code 1](../../troubleshooting/exit-code-1) - Troubleshoot startup failures
+- [5-Hour Usage Limit](../../troubleshooting/5-hour-limit) - Understanding usage tracking
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "How do I verify Claude Code is installed correctly?",
+    answer: "Run 'claude code --version' in your terminal. If the command returns version information, installation is confirmed. If you see 'command not found', Claude Code is not installed or not in your PATH."
+  },
+  {
+    question: "Where are Claude Code configuration files stored?",
+    answer: "Configuration files are stored in ~/.claude/ in your home directory. This directory is created when Claude Code first runs. You can verify it exists with 'ls ~/.claude/'."
+  },
+  {
+    question: "Why does my terminal say 'command not found'?",
+    answer: "This means either Claude Code is not installed, or the installation directory is not in your shell's PATH. Use 'which claude' (or 'where claude' on Windows) to check if the binary exists on your system."
+  },
+  {
+    question: "Do I need to restart my terminal after installation?",
+    answer: "Possibly. If the installation modified your shell configuration (like .bashrc or .zshrc), you need to reload it with 'source ~/.bashrc' or restart your terminal for changes to take effect."
+  },
+  {
+    question: "How do I check which version is installed?",
+    answer: "Run 'claude code --version' to display the installed version number. This command works regardless of your current directory or project."
+  }
+]} />
+
+---
+
+**Last Updated**: February 1, 2026

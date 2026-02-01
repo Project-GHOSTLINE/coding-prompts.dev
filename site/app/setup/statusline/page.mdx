@@ -1,0 +1,176 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code Statusline Setup',
+  description: 'Configure Claude Code statusline to display usage and session information in your terminal prompt.',
+}
+
+# Claude Code Statusline Setup
+
+<TLDRBlock>
+Claude Code statusline displays usage and session information in your terminal prompt. Enable it through the config command, then reload your shell. Configuration settings are stored in ~/.claude/config.json and can be customized for your shell environment.
+</TLDRBlock>
+
+## When This Applies
+
+Use statusline when you want real-time visibility of Claude Code usage and session information directly in your terminal prompt. This applies to users working with bash, zsh, or fish shells who want to monitor their session without running separate commands.
+
+## Symptoms You'll See
+
+**When statusline is working:**
+
+Your terminal prompt displays Claude Code information:
+```
+[Claude usage info] ~/project $
+```
+
+**When statusline is not working:**
+
+Your terminal prompt appears unchanged with no Claude Code information displayed.
+
+## Likely Causes
+
+Statusline fails to appear when:
+
+- Statusline is not enabled in configuration
+- Shell has not been reloaded after enabling
+- Shell integration was not properly initialized
+- Configuration file permissions prevent reading
+- Shell profile file does not include initialization code
+
+## Fix Sequence
+
+### 1. Enable Statusline Configuration
+
+Enable the statusline feature:
+
+```bash
+claude code config set statusline.enabled true
+```
+
+**Verify**: Run `claude code config get statusline.enabled` and confirm it returns `true`.
+
+### 2. Initialize Shell Integration
+
+Add initialization to your shell configuration file.
+
+**For bash**, add to `~/.bashrc`:
+```bash
+eval "$(claude code statusline --init bash)"
+```
+
+**For zsh**, add to `~/.zshrc`:
+```bash
+eval "$(claude code statusline --init zsh)"
+```
+
+**For fish**, add to `~/.config/fish/config.fish`:
+```fish
+claude code statusline --init fish | source
+```
+
+**Verify**: Check that the line was added to your shell config file.
+
+### 3. Reload Shell Configuration
+
+Apply the changes by reloading your shell:
+
+```bash
+source ~/.bashrc  # for bash
+source ~/.zshrc   # for zsh
+# for fish: restart terminal or run 'exec fish'
+```
+
+**Verify**: Check your prompt. Claude Code information should now be visible.
+
+### 4. Customize Display (Optional)
+
+Edit `~/.claude/config.json` to modify statusline settings. Only use documented configuration options:
+
+```json
+{
+  "statusline": {
+    "enabled": true
+  }
+}
+```
+
+**Verify**: Reload shell and confirm changes take effect.
+
+## What NOT to Do
+
+**Don't edit shell prompt variables directly**: Let the initialization command handle prompt configuration. Manual edits may conflict with Claude Code's integration and cause display issues.
+
+**Don't skip shell reload**: Configuration changes require reloading your shell to take effect. The statusline will not appear until you run `source ~/.bashrc` or restart your terminal.
+
+**Don't assume cross-shell compatibility**: Each shell (bash, zsh, fish) requires its specific initialization command. Using the wrong init command will fail silently.
+
+**Don't rely on unverified config options**: Only use configuration options documented in the official Claude Code documentation. Undocumented options may not work or may break in future versions.
+
+## Diagnostic Commands
+
+Check if statusline is enabled:
+
+```bash
+claude code config get statusline.enabled
+```
+
+View current configuration:
+
+```bash
+cat ~/.claude/config.json
+```
+
+Check if shell integration is loaded (bash/zsh):
+
+```bash
+echo $PROMPT
+```
+
+Check if shell integration is loaded (fish):
+
+```bash
+echo $fish_prompt
+```
+
+Verify terminal color support:
+
+```bash
+echo $COLORTERM
+```
+
+## Related Issues
+
+- [Claude Code Installation](../installation) - Initial setup and requirements
+- Configuration file permissions and locations
+- Terminal compatibility and requirements
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "How do I enable Claude Code statusline?",
+    answer: "Run 'claude code config set statusline.enabled true', add the appropriate init command to your shell config file, then reload your shell with 'source ~/.bashrc' (or the equivalent for your shell)."
+  },
+  {
+    question: "Which shells are supported?",
+    answer: "Claude Code statusline works with bash, zsh, and fish. Each shell requires its specific initialization command. Use 'claude code statusline --init' with your shell name as the argument."
+  },
+  {
+    question: "Why doesn't my statusline appear after enabling?",
+    answer: "You must reload your shell after enabling statusline and adding the init command to your shell config file. Run 'source ~/.bashrc' (or equivalent) or restart your terminal."
+  },
+  {
+    question: "Where is the statusline configuration stored?",
+    answer: "Statusline settings are stored in ~/.claude/config.json. You can edit this file directly or use 'claude code config set' commands to modify settings."
+  },
+  {
+    question: "Can I customize what the statusline displays?",
+    answer: "Customization options depend on what is supported in ~/.claude/config.json. Check the official documentation for available configuration options and their effects."
+  }
+]} />
+
+---
+
+**Last Updated**: February 1, 2026

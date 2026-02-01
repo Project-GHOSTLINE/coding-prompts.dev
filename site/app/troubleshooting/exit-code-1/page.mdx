@@ -1,0 +1,300 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { QuickAnswer } from '@/components/AEO/QuickAnswer'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Fix Claude Code "Process Exited with Code 1" Error',
+  description: 'Claude Code exit code 1 fix: Run reset-permissions command, then restart. Common solution for permission and configuration issues.',
+}
+
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: 'How to Fix Claude Code Process Exited with Code 1',
+      datePublished: '2026-02-01',
+      dateModified: '2026-02-01',
+      author: { '@type': 'Person', name: 'Coding Prompts' }
+    })
+  }}
+/>
+
+# Claude Code Process Exited with Code 1
+
+## Direct Answer
+
+Exit code 1 means Claude Code terminated due to a general error. Run `claude code --reset-permissions` then `claude code restart` as the first troubleshooting step. This error typically indicates permission issues, corrupted configuration files, or network connectivity problems. The fix sequence below resolves the issue in order of likelihood.
+
+<QuickAnswer
+  solution="claude code --reset-permissions && claude code restart"
+  verification="Claude Code should start without errors. Check terminal output for 'Ready' or similar success message."
+/>
+
+## When This Applies
+
+You'll need this guide if:
+- You see "Process exited with code 1" in your terminal
+- Claude Code fails to start or crashes immediately
+- You get permission errors when running Claude Code
+- Claude Code worked previously but stopped working after system changes
+- You recently updated Claude Code or your operating system
+
+## Symptoms You'll See
+
+```bash
+# Typical error output
+Error: Process exited with code 1
+
+# Or similar variations
+Claude Code process terminated unexpectedly
+Exit code: 1
+```
+
+Additional symptoms:
+- Terminal shows error and immediately returns to prompt
+- No Claude Code interface appears
+- Previous session data may be inaccessible
+- Config files appear but Claude Code won't launch
+
+## Likely Causes
+
+### Permission Issues
+
+Claude Code can't access required files or directories:
+- File permissions changed after installation
+- Working directory has restricted access
+- Security software blocking file access
+- Running from a protected system directory
+
+### Corrupted Configuration
+
+Your `~/.claude/config.json` or related files contain invalid data:
+- Manual edits with syntax errors
+- Write operation interrupted mid-save
+- Conflicting settings from multiple installations
+- Cache corruption from improper shutdown
+
+### Network Connectivity
+
+Claude Code can't reach Anthropic's API:
+- Firewall blocking outbound connections
+- Proxy misconfiguration or credentials expired
+- Network connection dropped during initialization
+- DNS resolution failures
+
+## Fix Sequence (Recommended Order)
+
+### Fix 1: Reset Permissions
+
+Try this first. Resolves permission-related issues.
+
+```bash
+# Check current permission status
+claude code --check-permissions
+```
+
+**Expected output:**
+```
+Checking file permissions...
+✓ Config directory: accessible
+✓ Cache directory: accessible
+```
+
+If you see permission errors, reset:
+
+```bash
+# Reset all permissions
+claude code --reset-permissions
+
+# Restart Claude Code
+claude code restart
+```
+
+**Verification:**
+```bash
+# Try to start Claude Code
+claude code
+
+# You should see:
+# ✓ Starting Claude Code...
+# ✓ Ready
+```
+
+**If this worked:** You're done. Claude Code should start normally.
+**If it failed:** Proceed to Fix 2.
+
+### Fix 2: Clear Cache and Config
+
+Use this if permission reset didn't work.
+
+```bash
+# Step 1: Clear application cache
+claude code --clear-cache
+
+# Step 2: Remove config directory (backs up automatically)
+rm -rf ~/.claude/cache
+
+# Step 3: Restart
+claude code restart
+```
+
+**Verification:**
+```bash
+# Check if config was recreated
+ls -la ~/.claude/
+
+# You should see fresh config files with recent timestamps
+```
+
+**If config doesn't exist:**
+```bash
+# Reconfigure
+claude code config set api-key YOUR_API_KEY
+```
+
+**If this worked:** Claude Code should start with fresh config.
+**If it failed:** Proceed to Fix 3.
+
+### Fix 3: Complete Reinstall
+
+Use this only if both previous fixes failed.
+
+```bash
+# Step 1: Uninstall completely
+npm uninstall -g @anthropic-ai/claude-code
+
+# Step 2: Remove all data
+rm -rf ~/.claude
+
+# Step 3: Clear npm cache
+npm cache clean --force
+
+# Step 4: Reinstall latest version
+npm install -g @anthropic-ai/claude-code
+
+# Step 5: Verify installation
+claude code --version
+```
+
+**Expected output:**
+```
+claude-code version X.X.X
+```
+
+**Step 6: Configure**
+```bash
+claude code config set api-key YOUR_API_KEY
+```
+
+**Verification:**
+```bash
+# Start Claude Code
+claude code
+
+# Should see successful startup without exit code 1
+```
+
+## Anti-patterns (Things That Make It Worse)
+
+**Don't do these:**
+
+- ❌ **Running with `sudo` to "fix" permissions** — This creates permission conflicts and makes the problem worse
+- ❌ **Manually editing `~/.claude/config.json` while troubleshooting** — Introduces new syntax errors
+- ❌ **Installing multiple versions simultaneously** — Causes path conflicts and unpredictable behavior
+- ❌ **Interrupting Claude Code mid-operation** — Corrupts state files and cache
+- ❌ **Ignoring specific error messages** — Exit code 1 is generic; actual cause may be in earlier output
+- ❌ **Skipping verification steps** — You won't know which fix worked or if the problem is actually resolved
+
+**Instead do:**
+
+- ✅ Use `--reset-permissions` instead of `sudo`
+- ✅ Use `claude code config` commands instead of manual edits
+- ✅ Uninstall old versions before installing new ones
+- ✅ Let operations complete fully before canceling
+- ✅ Read full terminal output, not just the exit code
+- ✅ Verify each fix with the commands provided
+
+## If It Still Fails: Collect Diagnostics
+
+If all three fixes fail, gather this information before contacting support:
+
+```bash
+# 1. Get Claude Code version
+claude code --version > ~/claude-debug.txt
+
+# 2. Check Node.js version
+node --version >> ~/claude-debug.txt
+
+# 3. Check npm version
+npm --version >> ~/claude-debug.txt
+
+# 4. List global npm packages
+npm list -g --depth=0 >> ~/claude-debug.txt
+
+# 5. Check permissions on Claude directory
+ls -la ~/.claude >> ~/claude-debug.txt
+
+# 6. Run Claude Code with verbose logging
+claude code --verbose 2>&1 | tee -a ~/claude-debug.txt
+```
+
+**What to include when asking for help:**
+- Contents of `~/claude-debug.txt`
+- Full terminal output showing the exit code 1 error
+- Operating system and version (run `uname -a` on Unix, `ver` on Windows)
+- What you were doing when the error first appeared
+- Which fixes you tried and their exact results
+
+**Where to get help:**
+- [Anthropic Claude Code Documentation](https://docs.anthropic.com/claude-code)
+- Anthropic support (if error persists after all fixes)
+
+## Related Issues
+
+If exit code 1 isn't your exact problem, try these guides:
+
+- [Dangerously Skip Permissions Guide](/troubleshooting/dangerously-skip-permissions) — If you need to bypass permission checks
+- [Approaching 5-Hour Limit](/troubleshooting/5-hour-limit) — If you're hitting usage limits instead
+- [Statusline Setup](/setup/statusline) — If Claude Code starts but statusline shows errors
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "What does exit code 1 mean in Claude Code?",
+    answer: "Exit code 1 is a Unix-standard general error signal. It means Claude Code encountered a problem and had to terminate. The code '1' indicates 'something went wrong' but doesn't specify what. Check the terminal output above the exit code for the actual cause."
+  },
+  {
+    question: "Why does Claude Code keep exiting with code 1?",
+    answer: "Persistent exit code 1 errors indicate corrupted configuration files, insufficient system resources, conflicting dependencies, or outdated Claude Code versions. Try the reset-permissions command first, then clear cache, and finally reinstall if needed."
+  },
+  {
+    question: "How can I prevent exit code 1 errors?",
+    answer: "Keep Claude Code updated regularly, check permissions periodically with --check-permissions, maintain stable network connection, and backup your config file before making changes. Avoid manually editing configuration files or interrupting Claude Code during operations."
+  },
+  {
+    question: "Does exit code 1 affect my project files?",
+    answer: "No. Exit code 1 only affects Claude Code's ability to run. Your project files, code, and data remain completely safe and unchanged. The error is about Claude Code itself, not your work."
+  },
+  {
+    question: "Should I contact support for exit code 1?",
+    answer: "Try all three fixes above first. If the error persists after a complete reinstall, or if you see additional error messages beyond just 'exit code 1', then contact Anthropic support with the diagnostic information from the 'If It Still Fails' section."
+  },
+  {
+    question: "Can I use Claude Code while fixing this error?",
+    answer: "No. Exit code 1 means Claude Code has stopped completely. You must fix the error before you can use Claude Code again. However, the fixes are typically quick to apply."
+  },
+  {
+    question: "What if I see a different exit code?",
+    answer: "Different exit codes indicate different errors. Exit code 127 means command not found. Exit code 130 means interrupted by user. Exit code 1 is generic. Check the actual error message in terminal output for the real cause."
+  }
+]} />
+
+---
+
+**Last Updated:** February 1, 2026
+
+**Sources:**
+- [Anthropic Claude Code Documentation](https://docs.anthropic.com/claude-code)

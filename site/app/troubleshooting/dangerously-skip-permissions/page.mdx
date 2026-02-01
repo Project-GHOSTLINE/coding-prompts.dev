@@ -1,0 +1,163 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code Dangerously Skip Permissions',
+  description: 'Using the --dangerously-skip-permissions flag to bypass permission prompts in automated and trusted environments.',
+}
+
+# Claude Code Dangerously Skip Permissions
+
+<TLDRBlock>
+The `--dangerously-skip-permissions` flag bypasses Claude Code permission prompts, granting automatic file system access. Use only in trusted, controlled environments like CI/CD pipelines or isolated development containers. The flag removes security safeguards that prevent unauthorized file access.
+</TLDRBlock>
+
+## When This Applies
+
+Use this flag when you need Claude Code to run without interactive permission prompts in:
+
+- Automated CI/CD pipelines where no user input is possible
+- Docker containers or virtual machines with isolated file systems
+- Testing environments where the codebase is fully trusted
+- Personal development environments on sandboxed systems
+
+This flag is not appropriate for production systems, shared development machines, or when working with untrusted code.
+
+## Symptoms You'll See
+
+**Without the flag (normal behavior):**
+
+Claude Code prompts for permission before accessing files:
+```bash
+claude code
+# Prompt: "Allow access to /Users/you/project?"
+# Requires: Yes/No response
+```
+
+**With the flag enabled:**
+
+Claude Code starts without prompts and accesses files automatically:
+```bash
+claude code --dangerously-skip-permissions
+# No prompts - immediate session start
+```
+
+## Likely Causes
+
+You need this flag when:
+
+- Running Claude Code in automated scripts or CI/CD where interactive prompts break the workflow
+- Operating in headless environments without TTY for user input
+- Working in containerized environments where permission prompts are not practical
+- Testing or development requires repeated access without manual approval
+
+## Fix Sequence
+
+### 1. Verify Current Permission Behavior
+
+Start Claude Code normally to confirm permission prompts appear:
+
+```bash
+claude code
+```
+
+**Verify**: Claude Code displays permission prompts before accessing files.
+
+### 2. Navigate to Trusted Directory
+
+Change to the specific project directory where you need automated access:
+
+```bash
+cd /path/to/trusted/project
+```
+
+**Verify**: Use `pwd` to confirm you are in the correct directory, not a broader scope like your home directory.
+
+### 3. Enable Permission Bypass
+
+Run Claude Code with the flag:
+
+```bash
+claude code --dangerously-skip-permissions
+```
+
+**Verify**: Claude Code starts without displaying permission prompts. Session begins immediately.
+
+### 4. Test File Access
+
+Within the session, request file operations to confirm no prompts appear:
+
+**Verify**: Claude Code reads and writes files without requesting permission for each operation.
+
+### 5. Exit When Complete
+
+Close the session to return to normal permission behavior:
+
+```bash
+# Within Claude Code session:
+exit
+```
+
+**Verify**: Next time you run `claude code` without the flag, permission prompts resume.
+
+## What NOT to Do
+
+**Don't run from your home directory or root**: Running `claude code --dangerously-skip-permissions` from broad directories like `~` or `/` grants access to your entire file system. Always navigate to the specific project directory first.
+
+**Don't use in production environments**: Production systems require audit trails and explicit permission controls. This flag removes those safeguards and creates security vulnerabilities.
+
+**Don't use with untrusted code**: Without permission prompts, Claude Code can read sensitive files (credentials, SSH keys, environment files) or execute commands without your knowledge. Only use this flag when you fully trust the codebase.
+
+**Don't combine with other automation without understanding scope**: Scripting this flag in automation tools multiplies risk if the script runs in unintended directories or contexts.
+
+## Diagnostic Commands
+
+Check if you're in the intended directory before using the flag:
+
+```bash
+pwd
+```
+
+Verify your current directory is the isolated project, not a broader scope.
+
+Test normal permission behavior (without flag):
+
+```bash
+claude code
+```
+
+Claude Code should display permission prompts. Use this to confirm normal behavior is restored when the flag is not used.
+
+## Related Issues
+
+- [Claude Code Exit Code 1](../exit-code-1) - Permission errors and startup failures
+- [5-Hour Usage Limit](../5-hour-limit) - Session management and usage tracking
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "When should I use --dangerously-skip-permissions?",
+    answer: "Use this flag only in automated environments like CI/CD pipelines, isolated containers, or trusted development sandboxes where interactive prompts are not possible. Never use in production or with untrusted code."
+  },
+  {
+    question: "Why is the flag named 'dangerously'?",
+    answer: "The name explicitly warns that this flag removes important security protections. Without permission checks, Claude Code can access, modify, or delete any file in scope without requesting approval."
+  },
+  {
+    question: "What access does Claude Code gain with this flag?",
+    answer: "Claude Code gains automatic read and write access to files in the current directory and subdirectories, ability to execute commands, and access to environment variables - all without prompting for permission."
+  },
+  {
+    question: "How do I disable the permission bypass?",
+    answer: "Simply run Claude Code without the flag. Permission checks resume immediately. The flag only affects the specific session where it is used."
+  },
+  {
+    question: "Can I verify the flag is working?",
+    answer: "Yes. With the flag enabled, Claude Code starts immediately without permission prompts. Without the flag, Claude Code displays permission prompts before accessing files."
+  }
+]} />
+
+---
+
+**Last Updated**: February 1, 2026

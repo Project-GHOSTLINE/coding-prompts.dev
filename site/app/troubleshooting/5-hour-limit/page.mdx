@@ -1,0 +1,137 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code 5-Hour Usage Limit',
+  description: 'How to check, understand, and work within Claude Code 5-hour rolling usage limit.',
+}
+
+# Claude Code 5-Hour Usage Limit
+
+<TLDRBlock>
+Claude Code enforces a 5-hour rolling usage limit. The timer resets continuously as older usage expires from the rolling window. Check remaining time with `claude code --usage`. When the limit is reached, wait for the rolling window to free up time.
+</TLDRBlock>
+
+## When This Applies
+
+This limit applies to Claude Code users during active coding sessions. The rolling 5-hour window tracks usage across all sessions. Usage from exactly 5 hours ago expires continuously, not at a fixed daily reset time.
+
+## Symptoms You'll See
+
+When you reach the usage limit, Claude Code prevents new sessions from starting:
+
+```bash
+claude code
+# Error: Usage limit reached (5.0/5.0 hours used)
+# Next available: [timestamp]
+```
+
+The error message indicates when usage will become available again based on the rolling window.
+
+## Likely Causes
+
+You reach the 5-hour limit when:
+
+- Extended continuous coding sessions exceed the rolling window
+- Multiple sessions run concurrently across different projects
+- Sessions remain open without being properly closed
+- Large file analysis or codebase operations consume time
+
+## Fix Sequence
+
+### 1. Check Current Usage Status
+
+Run the usage command to see your current state:
+
+```bash
+claude code --usage
+```
+
+**Expected output**: Displays hours used, hours remaining, and when the oldest usage expires.
+
+**Verify**: The command returns usage statistics without errors.
+
+### 2. Wait for Rolling Window Reset
+
+The rolling 5-hour window automatically frees up time as older usage expires. The `--usage` command shows when the next time will become available.
+
+**Verify**: Run `claude code --usage` again after the indicated expiration time. Available hours should increase.
+
+### 3. Close Unused Sessions
+
+If you have sessions running that are no longer needed, exit them:
+
+```bash
+claude code exit
+```
+
+**Verify**: Confirm the session terminated. Subsequent `--usage` checks should reflect the closed session.
+
+### 4. Plan Session Usage
+
+Before starting large tasks, check available time:
+
+```bash
+claude code --usage
+```
+
+**Verify**: Confirm sufficient remaining time exists for your intended work.
+
+## What NOT to Do
+
+**Don't run multiple concurrent sessions unnecessarily**: Running many sessions simultaneously exhausts your limit faster. Close sessions when switching between projects instead of leaving them open.
+
+**Don't leave sessions open during breaks**: Open sessions may continue consuming time. Exit sessions when taking extended breaks or when work is complete.
+
+**Don't assume a daily reset**: The limit is rolling, not daily. Usage expires exactly 5 hours after it was consumed, not at midnight or a fixed time.
+
+**Don't rely on unverified flags**: Only use documented command flags. Test commands in your environment to confirm behavior.
+
+## Diagnostic Commands
+
+Check your current usage status:
+
+```bash
+claude code --usage
+```
+
+This command displays:
+- Total hours used in the rolling 5-hour window
+- Remaining hours available
+- Timestamp when the oldest usage will expire
+
+The `--usage` command itself does not consume time from your limit.
+
+## Related Issues
+
+- [Claude Code Exit Code 1](../exit-code-1) - Session startup failures and troubleshooting
+- Session management and cleanup procedures
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "Is the 5-hour limit per day?",
+    answer: "No. It operates as a rolling 5-hour window. Usage from exactly 5 hours ago expires continuously, freeing up time. This allows usage throughout the day in intervals."
+  },
+  {
+    question: "How do I check my remaining time?",
+    answer: "Run 'claude code --usage' to see current usage, remaining time, and when your oldest usage expires. This command does not count toward your usage limit."
+  },
+  {
+    question: "What happens when I hit the limit?",
+    answer: "Claude Code prevents new sessions from starting and displays an error message with the timestamp when usage will become available again based on the rolling window."
+  },
+  {
+    question: "What counts toward the usage limit?",
+    answer: "Active coding sessions, file analysis, command execution, and conversation time count toward the limit. Specific idle time handling depends on session state."
+  },
+  {
+    question: "Can I increase the usage limit?",
+    answer: "Check the official Claude Code documentation or your account dashboard for information about plan options and usage limits."
+  }
+]} />
+
+---
+
+**Last Updated**: February 1, 2026

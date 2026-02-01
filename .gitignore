@@ -1,0 +1,12 @@
+# Archives
+*.zip
+
+# Excel files
+*.xlsx
+
+# OS files
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
