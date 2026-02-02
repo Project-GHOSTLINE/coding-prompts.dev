@@ -84,6 +84,48 @@ interface Stats {
       tablet: { clicks: number; impressions: number; ctr: number }
     }
   }
+  contentPerformance: {
+    topPagesAI: Array<{
+      page: string
+      aiSessions: number
+      aiPageViews: number
+      aiAvgDuration: number
+      aiBounceRate: number
+      aiEngagement: number
+    }>
+    topPagesOrganic: Array<{
+      page: string
+      organicSessions: number
+      organicPageViews: number
+      organicAvgDuration: number
+      organicBounceRate: number
+      organicEngagement: number
+    }>
+    comparison: Array<{
+      page: string
+      aiSessions: number
+      organicSessions: number
+      aiPerformanceScore: number
+      organicPerformanceScore: number
+      winner: 'AI' | 'Organic' | 'Equal'
+      aiAvgDuration: number
+      organicAvgDuration: number
+    }>
+    overallMetrics: {
+      ai: {
+        avgSessionDuration: number
+        avgBounceRate: number
+        avgPagesPerSession: number
+        avgEngagementRate: number
+      }
+      organic: {
+        avgSessionDuration: number
+        avgBounceRate: number
+        avgPagesPerSession: number
+        avgEngagementRate: number
+      }
+    }
+  }
   vercel: {
     pageViews: { total: number; change: string }
     uniqueVisitors: { total: number; change: string }
@@ -533,6 +575,229 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content Performance: AI vs Organic */}
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">📊 Content Performance: AI vs Organic</h2>
+
+          {/* Overall Metrics Comparison */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            {/* AI Overall Metrics */}
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow p-6 border-2 border-blue-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-md font-semibold text-blue-900">🤖 AI Engine Performance</h3>
+                <span className="text-xs bg-blue-200 text-blue-900 px-2 py-1 rounded-full font-medium">Overall</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-blue-700 mb-1">Avg Session Duration</p>
+                  <p className="text-2xl font-bold text-blue-900">
+                    {stats.contentPerformance.overallMetrics.ai.avgSessionDuration}s
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-blue-700 mb-1">Bounce Rate</p>
+                  <p className="text-2xl font-bold text-blue-900">
+                    {stats.contentPerformance.overallMetrics.ai.avgBounceRate}%
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-blue-700 mb-1">Pages/Session</p>
+                  <p className="text-2xl font-bold text-blue-900">
+                    {stats.contentPerformance.overallMetrics.ai.avgPagesPerSession}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-blue-700 mb-1">Engagement Rate</p>
+                  <p className="text-2xl font-bold text-blue-900">
+                    {stats.contentPerformance.overallMetrics.ai.avgEngagementRate}%
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Organic Overall Metrics */}
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg shadow p-6 border-2 border-green-200">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-md font-semibold text-green-900">🔍 Google Organic Performance</h3>
+                <span className="text-xs bg-green-200 text-green-900 px-2 py-1 rounded-full font-medium">Overall</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-green-700 mb-1">Avg Session Duration</p>
+                  <p className="text-2xl font-bold text-green-900">
+                    {stats.contentPerformance.overallMetrics.organic.avgSessionDuration}s
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-green-700 mb-1">Bounce Rate</p>
+                  <p className="text-2xl font-bold text-green-900">
+                    {stats.contentPerformance.overallMetrics.organic.avgBounceRate}%
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-green-700 mb-1">Pages/Session</p>
+                  <p className="text-2xl font-bold text-green-900">
+                    {stats.contentPerformance.overallMetrics.organic.avgPagesPerSession}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs text-green-700 mb-1">Engagement Rate</p>
+                  <p className="text-2xl font-bold text-green-900">
+                    {stats.contentPerformance.overallMetrics.organic.avgEngagementRate}%
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Page-by-Page Comparison */}
+          {stats.contentPerformance.comparison.length > 0 && (
+            <div className="bg-white rounded-lg shadow overflow-hidden mb-6">
+              <div className="px-6 py-4 border-b border-gray-200 bg-purple-50">
+                <h3 className="text-md font-semibold text-gray-900">⚖️ Page Performance Comparison</h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Performance scores calculated from engagement, duration, and bounce rate
+                </p>
+              </div>
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Page</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">AI Score</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Organic Score</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Winner</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">AI Sessions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Organic Sessions</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {stats.contentPerformance.comparison.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{item.page}</td>
+                      <td className="px-6 py-4 text-sm">
+                        <div className="flex items-center">
+                          <span className={`font-bold ${
+                            item.aiPerformanceScore > 70 ? 'text-green-600' :
+                            item.aiPerformanceScore > 40 ? 'text-yellow-600' :
+                            'text-red-600'
+                          }`}>
+                            {item.aiPerformanceScore}/100
+                          </span>
+                          <span className="ml-2 text-xs text-gray-500">{item.aiAvgDuration}s</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        <div className="flex items-center">
+                          <span className={`font-bold ${
+                            item.organicPerformanceScore > 70 ? 'text-green-600' :
+                            item.organicPerformanceScore > 40 ? 'text-yellow-600' :
+                            'text-red-600'
+                          }`}>
+                            {item.organicPerformanceScore}/100
+                          </span>
+                          <span className="ml-2 text-xs text-gray-500">{item.organicAvgDuration}s</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                          item.winner === 'AI' ? 'bg-blue-100 text-blue-800' :
+                          item.winner === 'Organic' ? 'bg-green-100 text-green-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {item.winner === 'AI' ? '🤖 AI' : item.winner === 'Organic' ? '🔍 Organic' : '⚖️ Equal'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{item.aiSessions.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{item.organicSessions.toLocaleString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* Top Pages Side by Side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Top Pages AI */}
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-200 bg-blue-50">
+                <h3 className="text-md font-semibold text-gray-900">🤖 Top Pages from AI Engines</h3>
+              </div>
+              {stats.contentPerformance.topPagesAI.length > 0 ? (
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Page</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Sessions</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Engagement</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {stats.contentPerformance.topPagesAI.slice(0, 5).map((page, idx) => (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-xs text-gray-900 max-w-xs truncate">{page.page}</td>
+                        <td className="px-4 py-3 text-xs text-gray-900">{page.aiSessions}</td>
+                        <td className="px-4 py-3 text-xs">
+                          <span className={`font-medium ${
+                            page.aiEngagement > 70 ? 'text-green-600' :
+                            page.aiEngagement > 40 ? 'text-yellow-600' :
+                            'text-gray-600'
+                          }`}>
+                            {page.aiEngagement}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="px-6 py-8 text-center text-gray-400">
+                  <p>No AI traffic data yet</p>
+                </div>
+              )}
+            </div>
+
+            {/* Top Pages Organic */}
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-200 bg-green-50">
+                <h3 className="text-md font-semibold text-gray-900">🔍 Top Pages from Google Organic</h3>
+              </div>
+              {stats.contentPerformance.topPagesOrganic.length > 0 ? (
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Page</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Sessions</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500">Engagement</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {stats.contentPerformance.topPagesOrganic.slice(0, 5).map((page, idx) => (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-xs text-gray-900 max-w-xs truncate">{page.page}</td>
+                        <td className="px-4 py-3 text-xs text-gray-900">{page.organicSessions}</td>
+                        <td className="px-4 py-3 text-xs">
+                          <span className={`font-medium ${
+                            page.organicEngagement > 70 ? 'text-green-600' :
+                            page.organicEngagement > 40 ? 'text-yellow-600' :
+                            'text-gray-600'
+                          }`}>
+                            {page.organicEngagement}%
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="px-6 py-8 text-center text-gray-400">
+                  <p>No organic traffic data yet</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { getSEMrushData } from '@/lib/semrush'
 import { getSearchConsoleData } from '@/lib/google-search-console'
 import { getAnalyticsData } from '@/lib/google-analytics'
 import { getAITrafficData } from '@/lib/ai-traffic-analytics'
+import { getContentPerformanceData } from '@/lib/content-performance'
 
 export async function GET() {
   // Check authentication
@@ -77,6 +78,33 @@ export async function GET() {
       }
     }
 
+    // Fetch Content Performance data
+    let contentPerformanceData
+    try {
+      contentPerformanceData = await getContentPerformanceData(30)
+    } catch (error) {
+      console.error('Content Performance error:', error)
+      contentPerformanceData = {
+        topPagesAI: [],
+        topPagesOrganic: [],
+        comparison: [],
+        overallMetrics: {
+          ai: {
+            avgSessionDuration: 0,
+            avgBounceRate: 0,
+            avgPagesPerSession: 0,
+            avgEngagementRate: 0
+          },
+          organic: {
+            avgSessionDuration: 0,
+            avgBounceRate: 0,
+            avgPagesPerSession: 0,
+            avgEngagementRate: 0
+          }
+        }
+      }
+    }
+
     // Use GA4 data for traffic (replacing Vercel Analytics)
     const vercelData = {
       pageViews: analyticsData.pageViews,
@@ -100,6 +128,7 @@ export async function GET() {
       searchConsole: searchConsoleData,
       analytics: analyticsData,
       aiTraffic: aiTrafficData,
+      contentPerformance: contentPerformanceData,
       vercel: vercelData,
       aeoTests
     })
