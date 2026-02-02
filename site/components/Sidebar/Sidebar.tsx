@@ -44,7 +44,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       </nav>
 
       {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-gray-950">
+      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10 bg-gray-950 space-y-3">
+        <Link
+          href="/admin/dashboard"
+          onClick={onClose}
+          className="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-medium text-sm shadow-md"
+        >
+          📊 Dashboard Admin
+        </Link>
         <p className="text-xs text-gray-500 text-center">
           © 2026 Coding Prompts
         </p>

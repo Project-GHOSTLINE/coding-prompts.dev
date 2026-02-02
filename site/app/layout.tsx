@@ -50,11 +50,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b bg-white">
           <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
             <a href="/" className="text-xl font-bold">Coding Prompts</a>
-            <div className="flex gap-6 text-sm">
+            <div className="flex gap-6 text-sm items-center">
               <a href="/troubleshooting" className="hover:text-blue-600">Troubleshooting</a>
               <a href="/setup" className="hover:text-blue-600">Setup</a>
               <a href="/features" className="hover:text-blue-600">Features</a>
               <a href="/vs" className="hover:text-blue-600">Comparisons</a>
+              <a href="/admin/dashboard" className="px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all font-medium shadow-sm">
+                Dashboard
+              </a>
             </div>
           </nav>
         </header>
