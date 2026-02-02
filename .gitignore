@@ -10,4 +10,16 @@
 # IDE
 .vscode/
 .idea/
-*.json
+
+# Sensitive JSON files (credentials, service accounts)
+*-service-account.json
+*-credentials.json
+clients-data-*.json
+*-key.json
+*-secret.json
+
+# Environment files
+.env*.local
+.env.local
+.env.production.local
+.env.development.local
