@@ -186,31 +186,60 @@ export default function DashboardPage() {
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-700">Page Views</span>
-                    <span className="text-sm text-green-600">{stats.vercel.pageViews.change}</span>
+                    {stats.vercel.pageViews.change !== 'N/A' && (
+                      <span className="text-sm text-green-600">{stats.vercel.pageViews.change}</span>
+                    )}
                   </div>
-                  <p className="text-3xl font-bold text-gray-900">{stats.vercel.pageViews.total.toLocaleString()}</p>
+                  <p className={`text-3xl font-bold ${
+                    typeof stats.vercel.pageViews.total === 'string' ? 'text-gray-400' : 'text-gray-900'
+                  }`}>
+                    {typeof stats.vercel.pageViews.total === 'number'
+                      ? stats.vercel.pageViews.total.toLocaleString()
+                      : stats.vercel.pageViews.total}
+                  </p>
+                  {typeof stats.vercel.pageViews.total === 'string' && (
+                    <p className="text-xs text-gray-400 mt-1">Configure Vercel Analytics</p>
+                  )}
                 </div>
                 <div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-700">Unique Visitors</span>
-                    <span className="text-sm text-green-600">{stats.vercel.uniqueVisitors.change}</span>
+                    {stats.vercel.uniqueVisitors.change !== 'N/A' && (
+                      <span className="text-sm text-green-600">{stats.vercel.uniqueVisitors.change}</span>
+                    )}
                   </div>
-                  <p className="text-3xl font-bold text-gray-900">{stats.vercel.uniqueVisitors.total.toLocaleString()}</p>
+                  <p className={`text-3xl font-bold ${
+                    typeof stats.vercel.uniqueVisitors.total === 'string' ? 'text-gray-400' : 'text-gray-900'
+                  }`}>
+                    {typeof stats.vercel.uniqueVisitors.total === 'number'
+                      ? stats.vercel.uniqueVisitors.total.toLocaleString()
+                      : stats.vercel.uniqueVisitors.total}
+                  </p>
+                  {typeof stats.vercel.uniqueVisitors.total === 'string' && (
+                    <p className="text-xs text-gray-400 mt-1">Configure Vercel Analytics</p>
+                  )}
                 </div>
               </div>
             </div>
 
             <h3 className="text-md font-semibold text-gray-900 mt-6 mb-3">Top Pages</h3>
             <div className="bg-white rounded-lg shadow divide-y divide-gray-200">
-              {stats.vercel.topPages.map((page, idx) => (
-                <div key={idx} className="px-6 py-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-gray-900">{page.path}</span>
-                    <span className="text-sm text-green-600">{page.change}</span>
+              {stats.vercel.topPages.length > 0 ? (
+                stats.vercel.topPages.map((page, idx) => (
+                  <div key={idx} className="px-6 py-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-gray-900">{page.path}</span>
+                      <span className="text-sm text-green-600">{page.change}</span>
+                    </div>
+                    <p className="text-sm text-gray-500 mt-1">{page.views.toLocaleString()} views</p>
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">{page.views.toLocaleString()} views</p>
+                ))
+              ) : (
+                <div className="px-6 py-8 text-center text-gray-400">
+                  <p>No data available</p>
+                  <p className="text-xs mt-1">Configure Vercel Analytics to see page stats</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
@@ -230,21 +259,37 @@ export default function DashboardPage() {
               </div>
 
               <div className="space-y-4">
-                {stats.aeoTests.results.map((result, idx) => (
-                  <div key={idx} className="border-l-4 border-blue-500 pl-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium text-gray-900">{result.model}</span>
-                      <span className="text-2xl font-bold text-blue-600">{result.matchScore}/5</span>
+                {stats.aeoTests.results.map((result, idx) => {
+                  const isNA = typeof result.matchScore === 'string'
+                  const score = typeof result.matchScore === 'number' ? result.matchScore : 0
+
+                  return (
+                    <div key={idx} className={`border-l-4 ${isNA ? 'border-gray-300' : 'border-blue-500'} pl-4`}>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium text-gray-900">{result.model}</span>
+                        <span className={`text-2xl font-bold ${isNA ? 'text-gray-400' : 'text-blue-600'}`}>
+                          {result.matchScore}{typeof result.matchScore === 'number' ? '/5' : ''}
+                        </span>
+                      </div>
+                      {!isNA && (
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="bg-blue-600 h-2 rounded-full"
+                            style={{ width: `${(score / 5) * 100}%` }}
+                          ></div>
+                        </div>
+                      )}
+                      {isNA && (
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div className="bg-gray-300 h-2 rounded-full w-0"></div>
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-500 mt-2">
+                        {isNA ? 'Manual testing required - see AEO-TEST-RESULTS.md' : `Updated: ${result.lastUpdate}`}
+                      </p>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full"
-                        style={{ width: `${(result.matchScore / 5) * 100}%` }}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-2">Updated: {result.lastUpdate}</p>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
 
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
@@ -309,7 +354,8 @@ function StatCard({
   icon: string
   isGood?: boolean
 }) {
-  const isPositive = change.startsWith('+')
+  const isNA = value === 'N/A' || change === 'N/A'
+  const isPositive = typeof change === 'string' && change.startsWith('+')
 
   return (
     <div className="bg-white rounded-lg shadow p-6">
@@ -317,12 +363,19 @@ function StatCard({
         <p className="text-sm font-medium text-gray-600">{title}</p>
         <span className="text-2xl">{icon}</span>
       </div>
-      <p className="text-3xl font-bold text-gray-900">{value}</p>
-      <p className={`text-sm mt-2 ${
-        isPositive === isGood ? 'text-green-600' : 'text-red-600'
-      }`}>
-        {change} this week
+      <p className={`text-3xl font-bold ${isNA ? 'text-gray-400' : 'text-gray-900'}`}>
+        {value}
       </p>
+      {!isNA && (
+        <p className={`text-sm mt-2 ${
+          isPositive === isGood ? 'text-green-600' : 'text-red-600'
+        }`}>
+          {change}
+        </p>
+      )}
+      {isNA && (
+        <p className="text-sm mt-2 text-gray-400">No data available</p>
+      )}
     </div>
   )
 }
