@@ -26,7 +26,7 @@ export const metadata = {
 
 ## Direct Answer
 
-Exit code 1 means Claude Code terminated due to a general error. Run `claude code --reset-permissions` then `claude code restart` as the first troubleshooting step. This error typically indicates permission issues, corrupted configuration files, or network connectivity problems. The fix sequence below resolves the issue in order of likelihood.
+Exit code 1 means Claude Code terminated due to an error. Run `claude code --reset-permissions` then `claude code restart` to fix permission issues, the most common cause. Other causes include corrupted configuration files or network connectivity problems. Follow the fix sequence below to resolve the error.
 
 <QuickAnswer
   solution="claude code --reset-permissions && claude code restart"
