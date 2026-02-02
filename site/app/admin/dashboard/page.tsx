@@ -18,6 +18,33 @@ interface Stats {
       url: string
     }>
   }
+  aiTraffic: {
+    totalAISessions: number
+    totalAIPageViews: number
+    aiVsOrganicRatio: number
+    byEngine: Array<{
+      engine: string
+      sessions: number
+      pageViews: number
+      avgSessionDuration: number
+      bounceRate: number
+      change: string
+    }>
+    timeSeriesData: Array<{
+      date: string
+      totalAI: number
+      chatgpt: number
+      claude: number
+      perplexity: number
+      gemini: number
+      other: number
+    }>
+    topLandingPages: Array<{
+      page: string
+      aiSessions: number
+      topEngine: string
+    }>
+  }
   vercel: {
     pageViews: { total: number; change: string }
     uniqueVisitors: { total: number; change: string }
@@ -175,6 +202,140 @@ export default function DashboardPage() {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* AI Engine Traffic */}
+        <div className="mb-8">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-gray-900">🤖 AI Engine Traffic</h2>
+            <span className="text-sm text-gray-600">
+              AI vs Organic: {stats.aiTraffic.aiVsOrganicRatio}% ratio
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <StatCard
+              title="AI Sessions"
+              value={stats.aiTraffic.totalAISessions.toLocaleString()}
+              change="N/A"
+              icon="🤖"
+            />
+            <StatCard
+              title="AI Page Views"
+              value={stats.aiTraffic.totalAIPageViews.toLocaleString()}
+              change="N/A"
+              icon="👁️"
+            />
+            <StatCard
+              title="Top AI Source"
+              value={stats.aiTraffic.byEngine[0]?.engine || 'N/A'}
+              change={stats.aiTraffic.byEngine[0]?.change || 'N/A'}
+              icon="⭐"
+            />
+          </div>
+
+          {/* AI Engines Breakdown */}
+          <div className="bg-white rounded-lg shadow overflow-hidden mb-6">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h3 className="text-md font-semibold text-gray-900">Traffic by AI Engine</h3>
+            </div>
+            {stats.aiTraffic.byEngine.length > 0 ? (
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Engine</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sessions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Page Views</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Avg Duration</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bounce Rate</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Change</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {stats.aiTraffic.byEngine.map((engine, idx) => (
+                    <tr key={idx} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm font-medium text-gray-900">{engine.engine}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{engine.sessions.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{engine.pageViews.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{engine.avgSessionDuration}s</td>
+                      <td className="px-6 py-4 text-sm text-gray-600">{engine.bounceRate}%</td>
+                      <td className="px-6 py-4 text-sm">
+                        <span className={`${
+                          engine.change.startsWith('+') ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {engine.change}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="px-6 py-8 text-center text-gray-400">
+                <p>No AI traffic detected yet</p>
+                <p className="text-xs mt-1">AI engines will appear here when they start referring traffic</p>
+              </div>
+            )}
+          </div>
+
+          {/* Time Series Chart */}
+          {stats.aiTraffic.timeSeriesData.length > 0 && (
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
+              <h3 className="text-md font-semibold text-gray-900 mb-4">AI Traffic Evolution (Last 30 Days)</h3>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={stats.aiTraffic.timeSeriesData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    tickFormatter={(value) => {
+                      const date = new Date(value.slice(0, 4) + '-' + value.slice(4, 6) + '-' + value.slice(6, 8))
+                      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    }}
+                  />
+                  <YAxis />
+                  <Tooltip
+                    labelFormatter={(value) => {
+                      const dateStr = String(value)
+                      const date = new Date(dateStr.slice(0, 4) + '-' + dateStr.slice(4, 6) + '-' + dateStr.slice(6, 8))
+                      return date.toLocaleDateString()
+                    }}
+                  />
+                  <Line type="monotone" dataKey="chatgpt" stroke="#10a37f" name="ChatGPT" />
+                  <Line type="monotone" dataKey="claude" stroke="#cc785c" name="Claude" />
+                  <Line type="monotone" dataKey="perplexity" stroke="#6366f1" name="Perplexity" />
+                  <Line type="monotone" dataKey="gemini" stroke="#4285f4" name="Gemini" />
+                  <Line type="monotone" dataKey="other" stroke="#9ca3af" name="Other" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          {/* Top Landing Pages from AI */}
+          {stats.aiTraffic.topLandingPages.length > 0 && (
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-200">
+                <h3 className="text-md font-semibold text-gray-900">Top Pages Referred by AI Engines</h3>
+              </div>
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Page</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">AI Sessions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Top Engine</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {stats.aiTraffic.topLandingPages.map((page, idx) => (
+                    <tr key={idx} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 text-sm text-gray-900">{page.page}</td>
+                      <td className="px-6 py-4 text-sm text-gray-900">{page.aiSessions.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-sm font-medium text-blue-600">{page.topEngine}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">

@@ -3,6 +3,7 @@ import { isAuthenticated } from '@/lib/auth'
 import { getSEMrushData } from '@/lib/semrush'
 import { getSearchConsoleData } from '@/lib/google-search-console'
 import { getAnalyticsData } from '@/lib/google-analytics'
+import { getAITrafficData } from '@/lib/ai-traffic-analytics'
 
 export async function GET() {
   // Check authentication
@@ -60,6 +61,22 @@ export async function GET() {
       }
     }
 
+    // Fetch AI Traffic data
+    let aiTrafficData
+    try {
+      aiTrafficData = await getAITrafficData(30)
+    } catch (error) {
+      console.error('AI Traffic error:', error)
+      aiTrafficData = {
+        totalAISessions: 0,
+        totalAIPageViews: 0,
+        aiVsOrganicRatio: 0,
+        byEngine: [],
+        timeSeriesData: [],
+        topLandingPages: []
+      }
+    }
+
     // Use GA4 data for traffic (replacing Vercel Analytics)
     const vercelData = {
       pageViews: analyticsData.pageViews,
@@ -82,6 +99,7 @@ export async function GET() {
       semrush: semrushData,
       searchConsole: searchConsoleData,
       analytics: analyticsData,
+      aiTraffic: aiTrafficData,
       vercel: vercelData,
       aeoTests
     })
