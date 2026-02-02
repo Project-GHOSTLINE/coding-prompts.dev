@@ -1,0 +1,168 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code Router Configuration',
+  description: 'Configure router settings for Claude Code workspace navigation and context switching.',
+}
+
+# Claude Code Router Configuration
+
+<TLDRBlock>
+Router configuration in Claude Code controls workspace navigation and context switching behavior. Configuration is managed through the config command or by editing ~/.claude/config.json. Verify settings with the config get command.
+</TLDRBlock>
+
+## When This Applies
+
+Use router configuration when:
+
+- Working across multiple projects or workspaces
+- Managing context switching between different codebases
+- Customizing navigation behavior in multi-repo setups
+- Configuring workspace detection and routing rules
+
+## Symptoms You'll See
+
+**When router is configured:**
+
+Claude Code navigates between workspaces according to configured rules. Context switches happen as expected.
+
+**When router needs configuration:**
+
+- Unexpected workspace switching
+- Context not maintained across navigation
+- Unclear which workspace is active
+- Navigation commands not behaving as expected
+
+## Likely Causes
+
+Router configuration issues occur when:
+
+- Default router settings don't match your workflow
+- Working in monorepos or multi-workspace setups
+- Custom workspace structure requires specific routing rules
+- Configuration file is missing or has incorrect syntax
+
+## Fix Sequence
+
+### 1. Check Current Router Configuration
+
+View existing router settings:
+
+```bash
+claude code config get router
+```
+
+**Verify**: Command displays current router configuration or indicates no custom settings exist.
+
+### 2. Verify Configuration File
+
+Check if configuration file exists:
+
+```bash
+cat ~/.claude/config.json
+```
+
+**Verify**: File exists and contains valid JSON. If file doesn't exist, Claude Code uses default settings.
+
+### 3. Test Workspace Navigation
+
+Navigate between workspaces to observe current behavior:
+
+**Verify**: Note which workspace becomes active and whether context is maintained.
+
+### 4. Apply Configuration Changes (If Needed)
+
+Edit configuration file with required router settings:
+
+```bash
+# Edit configuration
+nano ~/.claude/config.json
+```
+
+**Verify**: File saves without errors and contains valid JSON syntax.
+
+### 5. Restart Claude Code Session
+
+Exit and restart to apply configuration changes:
+
+```bash
+# Exit current session
+exit
+
+# Start new session
+claude code
+```
+
+**Verify**: New session uses updated router configuration.
+
+## What NOT to Do
+
+**Don't edit config while Claude Code is running**: Configuration changes may not take effect or could be overwritten. Always exit sessions before modifying config files.
+
+**Don't use unverified configuration keys**: Only use router options documented in official Claude Code documentation. Undocumented keys may break in future versions.
+
+**Don't mix absolute and relative paths inconsistently**: Choose one path style for your configuration and use it consistently to avoid navigation confusion.
+
+**Don't skip configuration file validation**: Invalid JSON syntax will cause configuration loading to fail silently. Always validate JSON after manual edits.
+
+## Diagnostic Commands
+
+View full configuration:
+
+```bash
+cat ~/.claude/config.json
+```
+
+Check if configuration file is valid JSON:
+
+```bash
+python3 -m json.tool ~/.claude/config.json
+```
+
+View current working directory:
+
+```bash
+pwd
+```
+
+Check Claude Code version (configuration format may vary):
+
+```bash
+claude code --version
+```
+
+## Related Issues
+
+- [Statusline Setup](../statusline) - Configure terminal status display
+- [Installation Verification](../installation) - Verify Claude Code setup
+- Workspace and context management
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "Where is router configuration stored?",
+    answer: "Router settings are stored in ~/.claude/config.json in your home directory. You can edit this file directly or use 'claude code config set' commands to modify settings."
+  },
+  {
+    question: "Do I need to restart Claude Code after changing router config?",
+    answer: "Yes. Configuration changes require restarting your Claude Code session to take effect. Exit the current session and start a new one."
+  },
+  {
+    question: "What happens if config.json has invalid JSON?",
+    answer: "Claude Code will fall back to default settings and may display a warning. Use a JSON validator to check syntax before restarting your session."
+  },
+  {
+    question: "Can I configure different routers for different projects?",
+    answer: "Configuration is user-level in ~/.claude/config.json. Project-specific settings depend on what options the router configuration supports. Check official documentation for available options."
+  },
+  {
+    question: "How do I reset router configuration to defaults?",
+    answer: "Remove router-related keys from ~/.claude/config.json or delete the file entirely to use default settings. Claude Code will recreate the file with defaults on next run."
+  }
+]} />
+
+---
+
+**Last Updated**: February 2, 2026

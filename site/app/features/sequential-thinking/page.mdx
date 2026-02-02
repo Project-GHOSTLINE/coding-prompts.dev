@@ -1,0 +1,151 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code Sequential Thinking',
+  description: 'Understanding and using sequential thinking mode in Claude Code for complex problem solving.',
+}
+
+# Claude Code Sequential Thinking
+
+<TLDRBlock>
+Sequential thinking in Claude Code enables step-by-step problem decomposition for complex tasks. The feature processes problems incrementally, allowing verification at each stage. Access it through conversation mode when working on multi-step operations.
+</TLDRBlock>
+
+## When This Applies
+
+Use sequential thinking when:
+
+- Debugging complex issues requiring multiple investigative steps
+- Implementing features with interdependent components
+- Refactoring code with many affected files
+- Analyzing system behavior across multiple layers
+- Planning changes that require validation before proceeding
+
+## Symptoms You'll See
+
+**When sequential thinking is active:**
+
+Claude Code breaks down problems into discrete steps, completing and verifying each before proceeding. You'll see explicit reasoning about what to do next.
+
+**When sequential thinking is not used:**
+
+Responses may attempt to solve everything at once, potentially missing intermediate verification steps or dependencies between tasks.
+
+## Likely Causes
+
+Sequential thinking is beneficial when:
+
+- The problem has multiple possible approaches requiring evaluation
+- Each step's outcome affects subsequent decisions
+- Verification is needed before committing to a direction
+- The task involves discovery (finding root causes, exploring code)
+- Changes in one area may cascade to others
+
+## Fix Sequence
+
+### 1. Identify the Complex Problem
+
+Determine if your task benefits from sequential thinking:
+
+**Verify**: Problem involves multiple steps or requires discovery before solution.
+
+### 2. Request Explicit Step-by-Step Approach
+
+In your conversation with Claude Code, ask for a sequential approach:
+
+**Verify**: Response outlines distinct steps or asks clarifying questions before proceeding.
+
+### 3. Verify Each Step Before Proceeding
+
+After each step completes, check the result:
+
+**Verify**: Output matches expected result before moving to next step.
+
+### 4. Adjust Direction Based on Findings
+
+Use information from completed steps to inform next actions:
+
+**Verify**: Subsequent steps incorporate learnings from previous steps.
+
+### 5. Confirm Final Outcome
+
+After all steps complete, verify the full solution:
+
+**Verify**: Original problem is resolved and all intermediate steps succeeded.
+
+## What NOT to Do
+
+**Don't skip verification between steps**: Each step's output informs the next. Proceeding without verification can compound errors and waste time.
+
+**Don't request everything at once for complex problems**: Asking for a complete solution to a multi-faceted problem may result in incomplete or incorrect approaches. Break it down instead.
+
+**Don't ignore intermediate findings**: If early steps reveal unexpected information, adjust your approach rather than forcing the original plan.
+
+**Don't assume sequential thinking is automatic**: Be explicit about wanting a step-by-step approach, especially for complex or unfamiliar problems.
+
+## Diagnostic Commands
+
+Check current working directory and context:
+
+```bash
+pwd
+ls -la
+```
+
+Verify file state before and after each step:
+
+```bash
+git status
+git diff
+```
+
+Test intermediate results:
+
+```bash
+# Run tests after each significant change
+npm test
+```
+
+Check for errors after each step:
+
+```bash
+# Language-specific linting/type checking
+npm run lint
+```
+
+## Related Issues
+
+- Problem decomposition and planning
+- Debugging multi-layer issues
+- Refactoring complex code
+- [Troubleshooting Exit Code 1](../../troubleshooting/exit-code-1) - Systematic error diagnosis
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "How do I trigger sequential thinking mode?",
+    answer: "Sequential thinking isn't a mode you activate. Instead, explicitly request a step-by-step approach in your conversation. Ask Claude Code to break down the problem and verify each step before proceeding."
+  },
+  {
+    question: "When should I use sequential thinking?",
+    answer: "Use it for complex problems with multiple steps, debugging that requires investigation, or tasks where each step's outcome affects the next. Simple, well-defined tasks don't require this approach."
+  },
+  {
+    question: "Can I skip steps if I know the answer?",
+    answer: "Yes. If you already know certain steps are correct or unnecessary, tell Claude Code to skip them. Sequential thinking is flexible and adapts to your knowledge level."
+  },
+  {
+    question: "Does sequential thinking slow down simple tasks?",
+    answer: "It can add overhead for straightforward tasks. Reserve this approach for genuinely complex problems. For simple tasks, direct requests are more efficient."
+  },
+  {
+    question: "How do I know if sequential thinking helped?",
+    answer: "You'll notice fewer false starts, better problem diagnosis, and solutions that account for dependencies between steps. The approach is particularly valuable when initial attempts don't work."
+  }
+]} />
+
+---
+
+**Last Updated**: February 2, 2026

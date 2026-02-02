@@ -1,0 +1,149 @@
+import { TLDRBlock } from '@/components/AEO/TLDRBlock'
+import { FAQ } from '@/components/AEO/FAQ'
+
+export const metadata = {
+  title: 'Claude Code vs Cursor',
+  description: 'Comparison of Claude Code and Cursor AI coding assistants for development workflows.',
+}
+
+# Claude Code vs Cursor
+
+<TLDRBlock>
+Claude Code and Cursor are both AI coding assistants with different approaches. Claude Code operates as a command-line tool with terminal integration, while Cursor is a VS Code fork with built-in AI features. Each suits different workflows and preferences.
+</TLDRBlock>
+
+## When This Applies
+
+Compare these tools when:
+
+- Choosing an AI coding assistant for your workflow
+- Evaluating terminal-based vs IDE-integrated tools
+- Deciding between command-line and graphical interfaces
+- Assessing which tool fits your development environment
+
+## Symptoms You'll See
+
+**Claude Code characteristics:**
+
+- Command-line interface accessed via terminal
+- Works with any text editor
+- Requires terminal comfort
+- Configuration through CLI commands and config files
+
+**Cursor characteristics:**
+
+- Full IDE with integrated AI features
+- Built on VS Code architecture
+- GUI-based interaction
+- Extension ecosystem from VS Code
+
+## Likely Causes
+
+You're comparing these tools because:
+
+- You need AI assistance but aren't sure which tool fits your workflow
+- Your team uses different development environments
+- You're evaluating costs and capabilities
+- You want terminal-based vs IDE-integrated options
+
+## Fix Sequence
+
+### 1. Identify Your Workflow Requirements
+
+Determine your development environment and preferences:
+
+**Verify**: You know whether you prefer terminal-based or IDE-based tools.
+
+### 2. Test Claude Code Installation
+
+If considering Claude Code, verify it works in your environment:
+
+```bash
+claude code --version
+```
+
+**Verify**: Command returns version information.
+
+### 3. Evaluate Editor Integration Needs
+
+Determine if you need specific editor features:
+
+**Verify**: You've identified must-have editor features or extensions.
+
+### 4. Test Basic Operations
+
+Try common tasks in your preferred tool:
+
+**Verify**: Tool handles your typical development workflows.
+
+### 5. Assess Long-term Fit
+
+Consider which tool aligns with your development style:
+
+**Verify**: Tool integrates smoothly with your existing workflow.
+
+## What NOT to Do
+
+**Don't choose based solely on popularity**: Select the tool that fits your workflow. Terminal users may prefer Claude Code; IDE users may prefer Cursor.
+
+**Don't assume you need to switch editors**: Claude Code works with your existing editor. Cursor requires adopting a new IDE.
+
+**Don't expect identical capabilities**: These are different tools with different architectures. Each has strengths in its domain.
+
+**Don't ignore your team's workflow**: If your team uses specific editors or terminals, choose tools that integrate with existing setups.
+
+## Diagnostic Commands
+
+Check Claude Code availability:
+
+```bash
+which claude
+claude code --version
+```
+
+Check current editor:
+
+```bash
+echo $EDITOR
+```
+
+View Claude Code configuration:
+
+```bash
+cat ~/.claude/config.json
+```
+
+## Related Issues
+
+- [Claude Code Installation](../../setup/installation) - Set up Claude Code
+- [Statusline Setup](../../setup/statusline) - Configure terminal integration
+- Editor and workflow preferences
+
+## FAQ
+
+<FAQ items={[
+  {
+    question: "Which is better, Claude Code or Cursor?",
+    answer: "Neither is universally better. Claude Code suits terminal-focused workflows and works with any editor. Cursor suits users who want an integrated IDE experience. Choose based on your development environment and preferences."
+  },
+  {
+    question: "Can I use both tools?",
+    answer: "Yes. They serve different use cases. You might use Claude Code for terminal work and Cursor for GUI-based editing. There's no conflict in having both installed."
+  },
+  {
+    question: "Do I need to switch my editor to use Claude Code?",
+    answer: "No. Claude Code is editor-agnostic. It works via terminal commands and can integrate with any text editor through terminal workflows."
+  },
+  {
+    question: "Does Cursor have better AI features than Claude Code?",
+    answer: "They have different feature sets. Cursor integrates AI into the IDE interface. Claude Code provides AI assistance through terminal commands. Effectiveness depends on your workflow."
+  },
+  {
+    question: "Is Claude Code free?",
+    answer: "Check the official Claude Code documentation for current pricing and usage limits. Availability and pricing may vary."
+  }
+]} />
+
+---
+
+**Last Updated**: February 2, 2026
