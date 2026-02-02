@@ -10,7 +10,7 @@ export default function TroubleshootingHub() {
 
       <div className="space-y-4">
         <Link href="/troubleshooting/exit-code-1" className="block p-6 border rounded-lg hover:shadow">
-          <h2 className="text-2xl font-bold mb-2">Fix &ldquo;Process Exited with Code 1&rdquo;</h2>
+          <h2 className="text-2xl font-bold mb-2">Fix {'"'}Process Exited with Code 1{'"'}</h2>
           <p className="text-gray-600">
             Common fix for permission and configuration errors
           </p>

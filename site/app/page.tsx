@@ -56,7 +56,7 @@ export default function Home() {
         <h2 className="text-2xl font-bold mb-4">🚀 Most Popular Guides</h2>
         <div className="space-y-3">
           <Link href="/troubleshooting/exit-code-1" className="block p-4 bg-white rounded hover:shadow">
-            <h3 className="font-bold">Fix &ldquo;Process Exited with Code 1&rdquo;</h3>
+            <h3 className="font-bold">Fix {'"'}Process Exited with Code 1{'"'}</h3>
             <p className="text-sm text-gray-600">Common fix for permission and configuration errors</p>
           </Link>
           <Link href="/troubleshooting/dangerously-skip-permissions" className="block p-4 bg-white rounded hover:shadow">
