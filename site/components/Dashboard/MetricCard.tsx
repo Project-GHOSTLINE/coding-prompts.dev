@@ -30,8 +30,8 @@ export default function MetricCard({
 
   const sizeClasses = {
     small: 'col-span-1',
-    medium: 'col-span-1 sm:col-span-2 lg:col-span-2',
-    large: 'col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-3'
+    medium: 'col-span-1 sm:col-span-2',
+    large: 'col-span-1 sm:col-span-2 lg:col-span-3'
   }
 
   return (
@@ -41,7 +41,7 @@ export default function MetricCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="p-6">
+      <div className="p-5 lg:p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">

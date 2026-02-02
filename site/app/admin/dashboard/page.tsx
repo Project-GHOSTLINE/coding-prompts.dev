@@ -220,18 +220,18 @@ export default function DashboardPage() {
       {/* Main content with margin for sidebar */}
       <div className="flex-1 lg:ml-64 min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b-2 border-blue-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
+      <header className="bg-white shadow-sm border-b-2 border-blue-100 sticky top-0 z-20">
+        <div className="max-w-[1920px] mx-auto px-8 lg:px-12 py-6 flex flex-col lg:flex-row justify-between lg:items-center gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Dashboard AEO
               </h1>
               <span className="text-xs font-bold font-mono bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-md">
                 v1.0.0
               </span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-gray-600 mt-2">
               🎯 coding-prompts.dev • AI Engine Optimization
             </p>
           </div>
@@ -244,7 +244,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={handleLogout}
-              className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+              className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg whitespace-nowrap"
             >
               Déconnexion
             </button>
@@ -252,9 +252,9 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <main className="w-full px-6 py-8">
+      <main className="w-full max-w-[1920px] mx-auto px-8 lg:px-12 py-8">
         {/* Dynamic Grid Layout - Key Metrics - Full Width */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
           {/* Large AI Sessions Card */}
           <MetricCard
             title="Total AI Sessions"
@@ -1170,9 +1170,9 @@ export default function DashboardPage() {
         </CollapsibleSection>
 
         {/* Quick Actions - Always Visible */}
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white rounded-xl shadow-md p-6 lg:p-8 border border-gray-200 mt-10">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <a
               href="/AEO-VERIFICATION.md"
               target="_blank"

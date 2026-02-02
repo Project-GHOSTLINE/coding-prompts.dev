@@ -25,12 +25,12 @@ export default function CollapsibleSection({
   const [isOpen, setIsOpen] = useState(defaultOpen)
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-6">
+    <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
       {/* Header - Always Visible */}
       <div className="border-b border-gray-200">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+          className="w-full px-6 lg:px-8 py-5 flex items-center justify-between hover:bg-gray-50 transition-colors"
         >
           <div className="flex items-center gap-4">
             <span className="text-3xl">{icon}</span>
@@ -74,7 +74,7 @@ export default function CollapsibleSection({
 
       {/* Expandable Content */}
       {isOpen && (
-        <div className="p-6 bg-gray-50">
+        <div className="p-6 lg:p-8 bg-gray-50">
           {children}
         </div>
       )}
