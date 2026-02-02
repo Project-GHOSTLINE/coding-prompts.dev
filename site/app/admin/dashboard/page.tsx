@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import Sidebar from '@/components/Sidebar/Sidebar'
 import MobileMenuButton from '@/components/Sidebar/MobileMenuButton'
+import CollapsibleSection from '@/components/Dashboard/CollapsibleSection'
 
 interface Stats {
   semrush: {
@@ -312,37 +313,31 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2 border-b border-gray-200">
-            <button className="px-6 py-3 font-medium text-blue-600 border-b-2 border-blue-600">
-              Vue d'ensemble
-            </button>
-            <button className="px-6 py-3 font-medium text-gray-500 hover:text-gray-700">
-              Détails (scroll ↓)
-            </button>
-          </div>
-          <div className="mt-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-            <p className="text-sm text-blue-900">
-              <strong>💡 Comment lire ce dashboard:</strong> La vue d'ensemble ci-dessus montre vos 4 métriques clés.
-              Scrollez vers le bas pour voir les détails par section: AI Traffic, SEO, Content Performance.
-            </p>
-          </div>
-        </div>
-
-        {/* SEO Overview */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-xl font-bold text-gray-900">📊 SEO Performance</h2>
-            <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">Via SEMrush</span>
-          </div>
-          <div className="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-700">
-              <strong>Qu'est-ce que c'est?</strong> Données SEO traditionnelles (Google Search) depuis SEMrush.
-              Montre combien de mots-clés vous rankez, votre position moyenne, et le trafic estimé.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* SEO Performance Section */}
+        <CollapsibleSection
+          title="SEO Performance"
+          subtitle="Données Google Search via SEMrush"
+          icon="📊"
+          badge="Via SEMrush"
+          summary={
+            <div className="flex gap-6 text-sm">
+              <div className="text-right">
+                <div className="text-gray-500">Keywords</div>
+                <div className="font-bold text-gray-900">{stats.semrush.totalKeywords}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">Avg Position</div>
+                <div className="font-bold text-gray-900">#{stats.semrush.avgPosition}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">Est. Traffic</div>
+                <div className="font-bold text-gray-900">{typeof stats.semrush.estimatedTraffic === 'number' ? stats.semrush.estimatedTraffic.toLocaleString() : stats.semrush.estimatedTraffic}/mo</div>
+              </div>
+            </div>
+          }
+        >
+          {/* SEO Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <StatCard
               title="Organic Keywords"
               value={stats.semrush.totalKeywords}
@@ -373,11 +368,9 @@ export default function DashboardPage() {
               subtitle="Liens entrants vers votre site"
             />
           </div>
-        </div>
 
-        {/* Top Keywords */}
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Top Performing Keywords</h2>
+          {/* Top Keywords Table */}
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Top Performing Keywords</h3>
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -408,22 +401,31 @@ export default function DashboardPage() {
               </tbody>
             </table>
           </div>
-        </div>
+        </CollapsibleSection>
 
         {/* AI Engine Traffic */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-xl font-bold text-gray-900">🤖 Trafic des Moteurs AI</h2>
-            <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
-              {stats.aiTraffic.byEngine.length} moteurs détectés
-            </span>
-          </div>
-          <div className="mb-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
-            <p className="text-sm text-blue-900">
-              <strong>💡 Qu'est-ce que c'est?</strong> Le trafic provenant des moteurs de recherche AI comme ChatGPT, Claude, Perplexity, Gemini.
-              Ces utilisateurs trouvent votre site via des réponses générées par AI. C'est l'essence de l'AEO (AI Engine Optimization).
-            </p>
-          </div>
+        <CollapsibleSection
+          title="Trafic des Moteurs AI"
+          subtitle="ChatGPT, Claude, Perplexity, Gemini et autres"
+          icon="🤖"
+          badge={`${stats.aiTraffic.byEngine.length} moteurs détectés`}
+          summary={
+            <div className="flex gap-6 text-sm">
+              <div className="text-right">
+                <div className="text-gray-500">Total Sessions AI</div>
+                <div className="font-bold text-gray-900">{stats.aiTraffic.totalAISessions.toLocaleString()}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">Page Views</div>
+                <div className="font-bold text-gray-900">{stats.aiTraffic.totalAIPageViews.toLocaleString()}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">AI/Organic Ratio</div>
+                <div className="font-bold text-gray-900">{stats.aiTraffic.aiVsOrganicRatio}%</div>
+              </div>
+            </div>
+          }
+        >
 
           {/* AI Engines Breakdown */}
           <div className="bg-white rounded-lg shadow overflow-hidden mb-6">
@@ -527,23 +529,39 @@ export default function DashboardPage() {
               </table>
             </div>
           )}
-        </div>
+        </CollapsibleSection>
 
-        {/* Search Opportunities & Device Performance */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        {/* Search Console Analytics */}
+        <CollapsibleSection
+          title="Search Console Analytics"
+          subtitle="Opportunités SEO et Performance par Appareil"
+          icon="🎯"
+          badge="Google Search Console"
+          summary={
+            <div className="flex gap-6 text-sm">
+              <div className="text-right">
+                <div className="text-gray-500">Opportunités</div>
+                <div className="font-bold text-gray-900">{stats.searchConsole.opportunities.length}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">Clicks</div>
+                <div className="font-bold text-gray-900">{typeof stats.searchConsole.totalClicks === 'number' ? stats.searchConsole.totalClicks.toLocaleString() : stats.searchConsole.totalClicks}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">CTR</div>
+                <div className="font-bold text-gray-900">{typeof stats.searchConsole.avgCTR === 'number' ? stats.searchConsole.avgCTR.toFixed(2) : stats.searchConsole.avgCTR}%</div>
+              </div>
+            </div>
+          }
+        >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Search Opportunities */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <h2 className="text-lg font-bold text-gray-900">🎯 Opportunités SEO</h2>
+              <h3 className="text-lg font-bold text-gray-900">Opportunités SEO</h3>
               <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">
                 Quick wins
               </span>
-            </div>
-            <div className="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-              <p className="text-xs text-yellow-900">
-                <strong>💡 Astuce:</strong> Ces mots-clés ont beaucoup d'impressions mais rankent entre 10-30.
-                Optimisez ces pages pour atteindre le top 5 et multiplier vos clics!
-              </p>
             </div>
             {stats.searchConsole.opportunities.length > 0 ? (
               <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -704,24 +722,31 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        </CollapsibleSection>
 
         {/* Content Performance: AI vs Organic */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-xl font-bold text-gray-900">📊 Performance de Contenu</h2>
-            <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">
-              AI vs Organic
-            </span>
-          </div>
-          <div className="mb-6 bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
-            <p className="text-sm text-purple-900 mb-2">
-              <strong>💡 Qu'est-ce que c'est?</strong> Compare comment vos pages performent selon la source de trafic (AI vs Google Organic).
-            </p>
-            <p className="text-sm text-purple-900">
-              <strong>Score de performance (0-100):</strong> Calculé selon engagement (40%), durée de session (40%), et bounce rate (20%).
-              Un score élevé = visiteurs engagés qui restent et explorent.
-            </p>
-          </div>
+        <CollapsibleSection
+          title="Performance de Contenu"
+          subtitle="Comparaison AI vs Organic - Score d'engagement"
+          icon="📊"
+          badge="AI vs Organic"
+          summary={
+            <div className="flex gap-6 text-sm">
+              <div className="text-right">
+                <div className="text-gray-500">AI Avg Duration</div>
+                <div className="font-bold text-blue-600">{stats.contentPerformance.overallMetrics.ai.avgSessionDuration}s</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">Organic Avg Duration</div>
+                <div className="font-bold text-green-600">{stats.contentPerformance.overallMetrics.organic.avgSessionDuration}s</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">Comparisons</div>
+                <div className="font-bold text-gray-900">{stats.contentPerformance.comparison.length} pages</div>
+              </div>
+            </div>
+          }
+        >
 
           {/* Overall Metrics Comparison */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -940,12 +965,31 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-        </div>
+        </CollapsibleSection>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        {/* Traffic & Testing */}
+        <CollapsibleSection
+          title="Traffic & Testing AEO"
+          subtitle="Vercel Analytics et Tests de Citation AI"
+          icon="📈"
+          badge="Analytics & Tests"
+          summary={
+            <div className="flex gap-6 text-sm">
+              <div className="text-right">
+                <div className="text-gray-500">Page Views</div>
+                <div className="font-bold text-gray-900">{typeof stats.vercel.pageViews.total === 'number' ? stats.vercel.pageViews.total.toLocaleString() : stats.vercel.pageViews.total}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-gray-500">AEO Tests</div>
+                <div className="font-bold text-gray-900">{stats.aeoTests.results.length} moteurs</div>
+              </div>
+            </div>
+          }
+        >
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Traffic Stats */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Traffic Overview</h2>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Traffic Overview</h3>
             <div className="bg-white rounded-lg shadow p-6">
               <div className="space-y-4">
                 <div>
@@ -1071,9 +1115,10 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
+        </CollapsibleSection>
 
-        {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow p-6">
+        {/* Quick Actions - Always Visible */}
+        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a
