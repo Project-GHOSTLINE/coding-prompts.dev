@@ -197,36 +197,133 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <header className="bg-white shadow-sm border-b-2 border-blue-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">AEO Dashboard</h1>
-            <p className="text-sm text-gray-500">coding-prompts.dev</p>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Dashboard AEO
+            </h1>
+            <p className="text-sm text-gray-600 mt-1">
+              🎯 coding-prompts.dev • AI Engine Optimization
+            </p>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">
-              Last update: {lastUpdate.toLocaleTimeString()}
-            </span>
+            <div className="text-right">
+              <p className="text-xs text-gray-500">Dernière mise à jour</p>
+              <p className="text-sm font-medium text-gray-700">
+                {lastUpdate.toLocaleTimeString('fr-FR')}
+              </p>
+            </div>
             <button
               onClick={handleLogout}
-              className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
             >
-              Logout
+              Déconnexion
             </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Quick Overview - Hero Section */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
+          <h2 className="text-2xl font-bold mb-2">Vue d'ensemble AEO</h2>
+          <p className="text-blue-100 mb-6 text-sm">
+            Suivi de votre optimisation pour les moteurs AI (ChatGPT, Claude, Perplexity, etc.)
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-blue-100">Total AI Sessions</span>
+                <span className="text-2xl">🤖</span>
+              </div>
+              <p className="text-3xl font-bold">{stats.aiTraffic.totalAISessions.toLocaleString()}</p>
+              <p className="text-xs text-blue-100 mt-2">
+                Visites provenant des moteurs AI
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-blue-100">Organic Clicks</span>
+                <span className="text-2xl">🔍</span>
+              </div>
+              <p className="text-3xl font-bold">
+                {typeof stats.searchConsole.totalClicks === 'number'
+                  ? stats.searchConsole.totalClicks.toLocaleString()
+                  : stats.searchConsole.totalClicks}
+              </p>
+              <p className="text-xs text-blue-100 mt-2">
+                Clics depuis Google Search
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-blue-100">Ranking Position</span>
+                <span className="text-2xl">📍</span>
+              </div>
+              <p className="text-3xl font-bold">
+                #{typeof stats.searchConsole.avgPosition === 'number'
+                  ? stats.searchConsole.avgPosition.toFixed(1)
+                  : stats.searchConsole.avgPosition}
+              </p>
+              <p className="text-xs text-blue-100 mt-2">
+                Position moyenne Google
+              </p>
+            </div>
+
+            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm text-blue-100">AI vs Organic</span>
+                <span className="text-2xl">⚡</span>
+              </div>
+              <p className="text-3xl font-bold">{stats.aiTraffic.aiVsOrganicRatio}%</p>
+              <p className="text-xs text-blue-100 mt-2">
+                Ratio trafic AI/Organic
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-2 border-b border-gray-200">
+            <button className="px-6 py-3 font-medium text-blue-600 border-b-2 border-blue-600">
+              Vue d'ensemble
+            </button>
+            <button className="px-6 py-3 font-medium text-gray-500 hover:text-gray-700">
+              Détails (scroll ↓)
+            </button>
+          </div>
+          <div className="mt-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <p className="text-sm text-blue-900">
+              <strong>💡 Comment lire ce dashboard:</strong> La vue d'ensemble ci-dessus montre vos 4 métriques clés.
+              Scrollez vers le bas pour voir les détails par section: AI Traffic, SEO, Content Performance.
+            </p>
+          </div>
+        </div>
+
         {/* SEO Overview */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">SEO Performance (SEMrush)</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl font-bold text-gray-900">📊 SEO Performance</h2>
+            <span className="text-xs bg-gray-100 text-gray-600 px-3 py-1 rounded-full">Via SEMrush</span>
+          </div>
+          <div className="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <p className="text-sm text-gray-700">
+              <strong>Qu'est-ce que c'est?</strong> Données SEO traditionnelles (Google Search) depuis SEMrush.
+              Montre combien de mots-clés vous rankez, votre position moyenne, et le trafic estimé.
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <StatCard
               title="Organic Keywords"
               value={stats.semrush.totalKeywords}
               change="N/A"
               icon="📊"
+              subtitle="Mots-clés qui vous trouvent"
             />
             <StatCard
               title="Avg Position"
@@ -234,18 +331,21 @@ export default function DashboardPage() {
               change="N/A"
               icon="📍"
               isGood={false}
+              subtitle="Position moyenne Google"
             />
             <StatCard
               title="Est. Traffic/mo"
               value={typeof stats.semrush.estimatedTraffic === 'number' ? stats.semrush.estimatedTraffic.toLocaleString() : stats.semrush.estimatedTraffic}
               change="N/A"
               icon="👥"
+              subtitle="Visites mensuelles estimées"
             />
             <StatCard
               title="Backlinks"
               value={stats.semrush.totalBacklinks}
               change="N/A"
               icon="🔗"
+              subtitle="Liens entrants vers votre site"
             />
           </div>
         </div>
@@ -287,32 +387,17 @@ export default function DashboardPage() {
 
         {/* AI Engine Traffic */}
         <div className="mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">🤖 AI Engine Traffic</h2>
-            <span className="text-sm text-gray-600">
-              AI vs Organic: {stats.aiTraffic.aiVsOrganicRatio}% ratio
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl font-bold text-gray-900">🤖 Trafic des Moteurs AI</h2>
+            <span className="text-xs bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+              {stats.aiTraffic.byEngine.length} moteurs détectés
             </span>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <StatCard
-              title="AI Sessions"
-              value={stats.aiTraffic.totalAISessions.toLocaleString()}
-              change="N/A"
-              icon="🤖"
-            />
-            <StatCard
-              title="AI Page Views"
-              value={stats.aiTraffic.totalAIPageViews.toLocaleString()}
-              change="N/A"
-              icon="👁️"
-            />
-            <StatCard
-              title="Top AI Source"
-              value={stats.aiTraffic.byEngine[0]?.engine || 'N/A'}
-              change={stats.aiTraffic.byEngine[0]?.change || 'N/A'}
-              icon="⭐"
-            />
+          <div className="mb-4 bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+            <p className="text-sm text-blue-900">
+              <strong>💡 Qu'est-ce que c'est?</strong> Le trafic provenant des moteurs de recherche AI comme ChatGPT, Claude, Perplexity, Gemini.
+              Ces utilisateurs trouvent votre site via des réponses générées par AI. C'est l'essence de l'AEO (AI Engine Optimization).
+            </p>
           </div>
 
           {/* AI Engines Breakdown */}
@@ -423,9 +508,17 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Search Opportunities */}
           <div>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">🎯 Search Opportunities</h2>
-              <span className="text-xs text-gray-500">High potential keywords</span>
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-lg font-bold text-gray-900">🎯 Opportunités SEO</h2>
+              <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">
+                Quick wins
+              </span>
+            </div>
+            <div className="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+              <p className="text-xs text-yellow-900">
+                <strong>💡 Astuce:</strong> Ces mots-clés ont beaucoup d'impressions mais rankent entre 10-30.
+                Optimisez ces pages pour atteindre le top 5 et multiplier vos clics!
+              </p>
             </div>
             {stats.searchConsole.opportunities.length > 0 ? (
               <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -472,7 +565,15 @@ export default function DashboardPage() {
 
           {/* Device Performance */}
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">📱 Device Performance</h2>
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-lg font-bold text-gray-900">📱 Performance par Appareil</h2>
+            </div>
+            <div className="mb-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+              <p className="text-xs text-gray-700">
+                <strong>💡 Qu'est-ce que c'est?</strong> Répartition de vos clics Google Search par type d'appareil.
+                Aide à optimiser l'expérience mobile vs desktop.
+              </p>
+            </div>
             <div className="bg-white rounded-lg shadow p-6">
               <div className="space-y-6">
                 {/* Desktop */}
@@ -581,7 +682,21 @@ export default function DashboardPage() {
 
         {/* Content Performance: AI vs Organic */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">📊 Content Performance: AI vs Organic</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="text-xl font-bold text-gray-900">📊 Performance de Contenu</h2>
+            <span className="text-xs bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-medium">
+              AI vs Organic
+            </span>
+          </div>
+          <div className="mb-6 bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+            <p className="text-sm text-purple-900 mb-2">
+              <strong>💡 Qu'est-ce que c'est?</strong> Compare comment vos pages performent selon la source de trafic (AI vs Google Organic).
+            </p>
+            <p className="text-sm text-purple-900">
+              <strong>Score de performance (0-100):</strong> Calculé selon engagement (40%), durée de session (40%), et bounce rate (20%).
+              Un score élevé = visiteurs engagés qui restent et explorent.
+            </p>
+          </div>
 
           {/* Overall Metrics Comparison */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -971,35 +1086,40 @@ function StatCard({
   value,
   change,
   icon,
-  isGood = true
+  isGood = true,
+  subtitle
 }: {
   title: string
   value: string | number
   change: string
   icon: string
   isGood?: boolean
+  subtitle?: string
 }) {
   const isNA = value === 'N/A' || change === 'N/A'
   const isPositive = typeof change === 'string' && change.startsWith('+')
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-100">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <p className="text-sm font-semibold text-gray-700">{title}</p>
         <span className="text-2xl">{icon}</span>
       </div>
-      <p className={`text-3xl font-bold ${isNA ? 'text-gray-400' : 'text-gray-900'}`}>
+      <p className={`text-3xl font-bold mb-1 ${isNA ? 'text-gray-400' : 'text-gray-900'}`}>
         {value}
       </p>
-      {!isNA && (
-        <p className={`text-sm mt-2 ${
+      {subtitle && (
+        <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
+      )}
+      {!isNA && change !== 'N/A' && (
+        <p className={`text-sm font-medium ${
           isPositive === isGood ? 'text-green-600' : 'text-red-600'
         }`}>
           {change}
         </p>
       )}
       {isNA && (
-        <p className="text-sm mt-2 text-gray-400">No data available</p>
+        <p className="text-xs text-gray-400 italic">Pas encore de données</p>
       )}
     </div>
   )
