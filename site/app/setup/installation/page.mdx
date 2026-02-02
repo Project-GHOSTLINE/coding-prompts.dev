@@ -1,5 +1,6 @@
 import { TLDRBlock } from '@/components/AEO/TLDRBlock'
 import { FAQ } from '@/components/AEO/FAQ'
+import { TerminalBlock } from '@/components/AEO/TerminalBlock'
 
 export const metadata = {
   title: 'Claude Code Installation Verification',
@@ -25,21 +26,32 @@ Use this guide when:
 
 **When installation is successful:**
 
+<TerminalBlock
+  title="Successful installation"
+  copyText="Claude Code version X.X.X"
+>
 ```bash
 claude code --version
 # Output: Claude Code version X.X.X
 ```
+</TerminalBlock>
 
 The command returns version information without errors.
 
 **When installation has issues:**
 
+<TerminalBlock
+  title="Installation error"
+  variant="error"
+  copyText="command not found: claude"
+>
 ```bash
 claude code --version
 # Output: command not found: claude
 # or: zsh: command not found: claude
 # or: bash: claude: command not found
 ```
+</TerminalBlock>
 
 The shell cannot locate the Claude Code executable.
 

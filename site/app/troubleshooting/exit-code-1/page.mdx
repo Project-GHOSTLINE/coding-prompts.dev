@@ -1,6 +1,7 @@
 import { TLDRBlock } from '@/components/AEO/TLDRBlock'
 import { QuickAnswer } from '@/components/AEO/QuickAnswer'
 import { FAQ } from '@/components/AEO/FAQ'
+import { TerminalBlock } from '@/components/AEO/TerminalBlock'
 
 export const metadata = {
   title: 'Fix Claude Code "Process Exited with Code 1" Error',
@@ -43,6 +44,13 @@ You'll need this guide if:
 
 ## Symptoms You'll See
 
+<TerminalBlock
+  title="Error output"
+  variant="error"
+  copyText={`Error: Process exited with code 1
+Claude Code process terminated unexpectedly
+Exit code: 1`}
+>
 ```bash
 # Typical error output
 Error: Process exited with code 1
@@ -51,6 +59,7 @@ Error: Process exited with code 1
 Claude Code process terminated unexpectedly
 Exit code: 1
 ```
+</TerminalBlock>
 
 Additional symptoms:
 - Terminal shows error and immediately returns to prompt
@@ -96,11 +105,19 @@ claude code --check-permissions
 ```
 
 **Expected output:**
+
+<TerminalBlock
+  title="Permission check output"
+  copyText={`Checking file permissions...
+✓ Config directory: accessible
+✓ Cache directory: accessible`}
+>
 ```
 Checking file permissions...
 ✓ Config directory: accessible
 ✓ Cache directory: accessible
 ```
+</TerminalBlock>
 
 If you see permission errors, reset:
 
@@ -113,6 +130,12 @@ claude code restart
 ```
 
 **Verification:**
+
+<TerminalBlock
+  title="Successful startup"
+  copyText={`✓ Starting Claude Code...
+✓ Ready`}
+>
 ```bash
 # Try to start Claude Code
 claude code
@@ -121,6 +144,7 @@ claude code
 # ✓ Starting Claude Code...
 # ✓ Ready
 ```
+</TerminalBlock>
 
 **If this worked:** You're done. Claude Code should start normally.
 **If it failed:** Proceed to Fix 2.
@@ -179,9 +203,15 @@ claude code --version
 ```
 
 **Expected output:**
+
+<TerminalBlock
+  title="Version verification"
+  copyText="claude-code version X.X.X"
+>
 ```
 claude-code version X.X.X
 ```
+</TerminalBlock>
 
 **Step 6: Configure**
 ```bash
