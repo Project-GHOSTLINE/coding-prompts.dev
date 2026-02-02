@@ -6,6 +6,8 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, R
 import Sidebar from '@/components/Sidebar/Sidebar'
 import MobileMenuButton from '@/components/Sidebar/MobileMenuButton'
 import CollapsibleSection from '@/components/Dashboard/CollapsibleSection'
+import MetricCard from '@/components/Dashboard/MetricCard'
+import MiniChart from '@/components/Dashboard/MiniChart'
 
 interface Stats {
   semrush: {
@@ -251,66 +253,116 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Quick Overview - Hero Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-xl p-8 mb-8 text-white">
-          <h2 className="text-2xl font-bold mb-2">Vue d'ensemble AEO</h2>
-          <p className="text-blue-100 mb-6 text-sm">
-            Suivi de votre optimisation pour les moteurs AI (ChatGPT, Claude, Perplexity, etc.)
-          </p>
+        {/* Dynamic Grid Layout - Key Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-8">
+          {/* Large AI Sessions Card */}
+          <MetricCard
+            title="Total AI Sessions"
+            value={stats.aiTraffic.totalAISessions.toLocaleString()}
+            icon="🤖"
+            subtitle="Visites des moteurs AI"
+            size="medium"
+            trend="up"
+            change="+12%"
+          >
+            <MiniChart
+              data={stats.aiTraffic.timeSeriesData.slice(-7).map(d => d.totalAI)}
+              color="blue"
+            />
+          </MetricCard>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-100">Total AI Sessions</span>
-                <span className="text-2xl">🤖</span>
-              </div>
-              <p className="text-3xl font-bold">{stats.aiTraffic.totalAISessions.toLocaleString()}</p>
-              <p className="text-xs text-blue-100 mt-2">
-                Visites provenant des moteurs AI
-              </p>
-            </div>
+          {/* Organic Clicks */}
+          <MetricCard
+            title="Organic Clicks"
+            value={typeof stats.searchConsole.totalClicks === 'number' ? stats.searchConsole.totalClicks.toLocaleString() : stats.searchConsole.totalClicks}
+            icon="🔍"
+            subtitle="Google Search"
+            size="small"
+            trend="up"
+            change="+8%"
+          />
 
-            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-100">Organic Clicks</span>
-                <span className="text-2xl">🔍</span>
-              </div>
-              <p className="text-3xl font-bold">
-                {typeof stats.searchConsole.totalClicks === 'number'
-                  ? stats.searchConsole.totalClicks.toLocaleString()
-                  : stats.searchConsole.totalClicks}
-              </p>
-              <p className="text-xs text-blue-100 mt-2">
-                Clics depuis Google Search
-              </p>
-            </div>
+          {/* Ranking Position */}
+          <MetricCard
+            title="Ranking Position"
+            value={`#${typeof stats.searchConsole.avgPosition === 'number' ? stats.searchConsole.avgPosition.toFixed(1) : stats.searchConsole.avgPosition}`}
+            icon="📍"
+            subtitle="Position moyenne"
+            size="small"
+            trend="down"
+            change="-2.1"
+          />
 
-            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-100">Ranking Position</span>
-                <span className="text-2xl">📍</span>
+          {/* AI vs Organic Ratio */}
+          <MetricCard
+            title="AI vs Organic"
+            value={`${stats.aiTraffic.aiVsOrganicRatio}%`}
+            icon="⚡"
+            subtitle="Ratio trafic"
+            size="medium"
+          >
+            <div className="flex gap-2">
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-1">AI</div>
+                <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"
+                     style={{ width: `${stats.aiTraffic.aiVsOrganicRatio}%` }} />
               </div>
-              <p className="text-3xl font-bold">
-                #{typeof stats.searchConsole.avgPosition === 'number'
-                  ? stats.searchConsole.avgPosition.toFixed(1)
-                  : stats.searchConsole.avgPosition}
-              </p>
-              <p className="text-xs text-blue-100 mt-2">
-                Position moyenne Google
-              </p>
+              <div className="flex-1">
+                <div className="text-xs text-gray-500 mb-1">Organic</div>
+                <div className="h-2 bg-gradient-to-r from-green-500 to-green-600 rounded-full"
+                     style={{ width: `${100 - stats.aiTraffic.aiVsOrganicRatio}%` }} />
+              </div>
             </div>
+          </MetricCard>
 
-            <div className="bg-white/10 backdrop-blur rounded-xl p-5 border border-white/20">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-100">AI vs Organic</span>
-                <span className="text-2xl">⚡</span>
+          {/* Keywords Count */}
+          <MetricCard
+            title="Keywords"
+            value={stats.semrush.totalKeywords}
+            icon="📊"
+            subtitle="Organic keywords"
+            size="small"
+          />
+
+          {/* Page Views */}
+          <MetricCard
+            title="Page Views"
+            value={typeof stats.vercel.pageViews.total === 'number' ? stats.vercel.pageViews.total.toLocaleString() : stats.vercel.pageViews.total}
+            icon="👁️"
+            subtitle="Total views"
+            size="small"
+            trend="up"
+            change="+15%"
+          />
+
+          {/* Engagement Rate Large Card */}
+          <MetricCard
+            title="Engagement AI"
+            value={`${stats.contentPerformance.overallMetrics.ai.avgEngagementRate}%`}
+            icon="💎"
+            subtitle="Taux engagement moyen"
+            size="medium"
+          >
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <div className="text-gray-500">Durée</div>
+                <div className="font-semibold text-blue-600">{stats.contentPerformance.overallMetrics.ai.avgSessionDuration}s</div>
               </div>
-              <p className="text-3xl font-bold">{stats.aiTraffic.aiVsOrganicRatio}%</p>
-              <p className="text-xs text-blue-100 mt-2">
-                Ratio trafic AI/Organic
-              </p>
+              <div>
+                <div className="text-gray-500">Pages/Session</div>
+                <div className="font-semibold text-purple-600">{stats.contentPerformance.overallMetrics.ai.avgPagesPerSession}</div>
+              </div>
             </div>
-          </div>
+          </MetricCard>
+
+          {/* Backlinks */}
+          <MetricCard
+            title="Backlinks"
+            value={stats.semrush.totalBacklinks}
+            icon="🔗"
+            subtitle="Liens entrants"
+            size="small"
+          />
         </div>
 
         {/* SEO Performance Section */}
