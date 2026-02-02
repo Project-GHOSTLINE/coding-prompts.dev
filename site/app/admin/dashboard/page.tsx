@@ -204,7 +204,7 @@ export default function DashboardPage() {
               <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Dashboard AEO
               </h1>
-              <span className="text-xs font-mono bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-full">
+              <span className="text-xs font-bold font-mono bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1.5 rounded-full shadow-md">
                 v1.0.0
               </span>
             </div>
