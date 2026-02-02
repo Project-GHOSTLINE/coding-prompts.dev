@@ -9,6 +9,21 @@
   p { @apply mb-4 leading-relaxed; }
   ul { @apply list-disc pl-6 mb-4 space-y-2; }
   ol { @apply list-decimal pl-6 mb-4 space-y-2; }
-  code { @apply bg-gray-100 px-2 py-1 rounded text-sm; }
-  pre { @apply bg-gray-900 text-gray-100 p-4 rounded-lg mb-4 overflow-x-auto; }
+
+  /* Inline code - dark theme */
+  code {
+    @apply bg-gray-800 text-gray-100 px-2 py-1 rounded text-sm font-mono;
+  }
+
+  /* Code blocks - improved readability */
+  pre {
+    @apply bg-gray-950 text-white p-4 rounded-xl mb-4 overflow-x-auto;
+    @apply border border-white/10 shadow-sm;
+  }
+
+  /* Code inside pre should not have double background */
+  pre code {
+    @apply bg-transparent text-white px-0 py-0 text-[13px] sm:text-sm md:text-base;
+    @apply leading-relaxed antialiased;
+  }
 }
