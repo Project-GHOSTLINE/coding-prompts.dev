@@ -30,8 +30,8 @@ export default function MetricCard({
 
   const sizeClasses = {
     small: 'col-span-1',
-    medium: 'col-span-1 md:col-span-2',
-    large: 'col-span-1 md:col-span-3'
+    medium: 'col-span-1 sm:col-span-2 lg:col-span-2',
+    large: 'col-span-1 sm:col-span-2 lg:col-span-3 xl:col-span-3'
   }
 
   return (
