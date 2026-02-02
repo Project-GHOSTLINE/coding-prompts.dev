@@ -117,26 +117,26 @@ export default function DashboardPage() {
             <StatCard
               title="Organic Keywords"
               value={stats.semrush.totalKeywords}
-              change="+12"
+              change="N/A"
               icon="📊"
             />
             <StatCard
               title="Avg Position"
               value={stats.semrush.avgPosition}
-              change="-0.3"
+              change="N/A"
               icon="📍"
-              isGood={(stats.semrush.avgPosition < 10)}
+              isGood={false}
             />
             <StatCard
               title="Est. Traffic/mo"
-              value={`${stats.semrush.estimatedTraffic.toLocaleString()}`}
-              change="+18%"
+              value={typeof stats.semrush.estimatedTraffic === 'number' ? stats.semrush.estimatedTraffic.toLocaleString() : stats.semrush.estimatedTraffic}
+              change="N/A"
               icon="👥"
             />
             <StatCard
               title="Backlinks"
               value={stats.semrush.totalBacklinks}
-              change="+2"
+              change="N/A"
               icon="🔗"
             />
           </div>
