@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import Sidebar from '@/components/Sidebar/Sidebar'
+import MobileMenuButton from '@/components/Sidebar/MobileMenuButton'
 
 interface Stats {
   semrush: {
@@ -143,6 +145,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
   const [lastUpdate, setLastUpdate] = useState(new Date())
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     fetchStats()
@@ -195,7 +198,24 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Mobile menu button */}
+      <MobileMenuButton onToggle={() => setSidebarOpen(!sidebarOpen)} />
+
+      {/* Main content with margin for sidebar */}
+      <div className="flex-1 lg:ml-64 min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b-2 border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex justify-between items-center">
@@ -1082,6 +1102,7 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
+      </div>
     </div>
   )
 }
