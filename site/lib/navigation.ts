@@ -1,8 +1,11 @@
 import {
-  WrenchScrewdriverIcon,
-  CogIcon,
-  SparklesIcon,
-  ScaleIcon
+  ChartBarIcon,
+  CpuChipIcon,
+  MagnifyingGlassIcon,
+  DocumentTextIcon,
+  DevicePhoneMobileIcon,
+  BeakerIcon,
+  Cog6ToothIcon
 } from '@heroicons/react/24/outline'
 
 export interface NavigationItem {
@@ -13,45 +16,70 @@ export interface NavigationItem {
 export interface NavigationSection {
   id: string
   label: string
-  icon: typeof WrenchScrewdriverIcon
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
   items: NavigationItem[]
 }
 
 export const navigationSections: NavigationSection[] = [
   {
-    id: 'troubleshooting',
-    label: 'Troubleshooting',
-    icon: WrenchScrewdriverIcon,
+    id: 'overview',
+    label: 'Vue d\'ensemble',
+    icon: ChartBarIcon,
     items: [
-      { href: '/troubleshooting/exit-code-1', label: 'Exit Code 1' },
-      { href: '/troubleshooting/dangerously-skip-permissions', label: 'Skip Permissions' },
-      { href: '/troubleshooting/5-hour-limit', label: '5 Hour Limit' }
+      { href: '/admin/dashboard', label: 'Dashboard Principal' },
+      { href: '/admin/dashboard#quick-stats', label: 'Statistiques Rapides' }
     ]
   },
   {
-    id: 'setup',
-    label: 'Setup',
-    icon: CogIcon,
+    id: 'seo',
+    label: 'SEO Performance',
+    icon: MagnifyingGlassIcon,
     items: [
-      { href: '/setup/installation', label: 'Installation' },
-      { href: '/setup/statusline', label: 'Status Line' },
-      { href: '/setup/router', label: 'Router' }
+      { href: '/admin/dashboard#seo', label: 'Vue d\'ensemble SEO' },
+      { href: '/admin/dashboard#keywords', label: 'Top Keywords' },
+      { href: '/admin/dashboard#opportunities', label: 'Opportunités' },
+      { href: '/admin/dashboard#devices', label: 'Par Appareil' }
     ]
   },
   {
-    id: 'features',
-    label: 'Features',
-    icon: SparklesIcon,
+    id: 'ai-traffic',
+    label: 'Trafic AI',
+    icon: CpuChipIcon,
     items: [
-      { href: '/features/sequential-thinking', label: 'Sequential Thinking' }
+      { href: '/admin/dashboard#ai-engines', label: 'Moteurs AI' },
+      { href: '/admin/dashboard#ai-trends', label: 'Tendances' },
+      { href: '/admin/dashboard#ai-landing', label: 'Pages Référées' },
+      { href: '/admin/dashboard#ai-ratio', label: 'Ratio AI/Organic' }
     ]
   },
   {
-    id: 'vs',
-    label: 'Comparisons',
-    icon: ScaleIcon,
+    id: 'content',
+    label: 'Performance Contenu',
+    icon: DocumentTextIcon,
     items: [
-      { href: '/vs/cursor', label: 'vs Cursor' }
+      { href: '/admin/dashboard#content-comparison', label: 'AI vs Organic' },
+      { href: '/admin/dashboard#top-pages-ai', label: 'Top Pages AI' },
+      { href: '/admin/dashboard#top-pages-organic', label: 'Top Pages Organic' },
+      { href: '/admin/dashboard#engagement', label: 'Métriques Engagement' }
+    ]
+  },
+  {
+    id: 'testing',
+    label: 'Tests AEO',
+    icon: BeakerIcon,
+    items: [
+      { href: '/admin/dashboard#aeo-tests', label: 'Citations AI' },
+      { href: '/AEO-VERIFICATION.md', label: 'Rapport AEO' },
+      { href: '/AEO-TEST-RESULTS.md', label: 'Résultats Tests' }
+    ]
+  },
+  {
+    id: 'settings',
+    label: 'Configuration',
+    icon: Cog6ToothIcon,
+    items: [
+      { href: '/admin/settings', label: 'Paramètres' },
+      { href: '/admin/api-config', label: 'Configuration API' }
     ]
   }
 ]

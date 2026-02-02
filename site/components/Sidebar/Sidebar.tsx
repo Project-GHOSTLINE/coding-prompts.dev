@@ -24,11 +24,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     >
       {/* Logo */}
       <div className="px-6 py-6 border-b border-white/10">
-        <Link href="/" onClick={onClose}>
+        <Link href="/admin/dashboard" onClick={onClose}>
           <h1 className="text-xl font-bold text-white hover:text-blue-400 transition-colors">
-            Claude Code Guides
+            Dashboard AEO
           </h1>
-          <p className="text-xs text-gray-400 mt-1">Troubleshooting & Setup</p>
+          <p className="text-xs text-gray-400 mt-1">Analytics & Optimization</p>
         </Link>
       </div>
 
