@@ -45,6 +45,45 @@ interface Stats {
       topEngine: string
     }>
   }
+  searchConsole: {
+    totalClicks: number | string
+    totalImpressions: number | string
+    avgCTR: number | string
+    avgPosition: number | string
+    previousPeriod: {
+      clicks: number
+      impressions: number
+      ctr: number
+      position: number
+    }
+    topQueries: Array<{
+      query: string
+      clicks: number
+      impressions: number
+      ctr: number
+      position: number
+      change: string
+    }>
+    topPages: Array<{
+      page: string
+      clicks: number
+      impressions: number
+      ctr: number
+      position: number
+    }>
+    opportunities: Array<{
+      query: string
+      impressions: number
+      position: number
+      currentCTR: number
+      potentialClicks: number
+    }>
+    deviceBreakdown: {
+      desktop: { clicks: number; impressions: number; ctr: number }
+      mobile: { clicks: number; impressions: number; ctr: number }
+      tablet: { clicks: number; impressions: number; ctr: number }
+    }
+  }
   vercel: {
     pageViews: { total: number; change: string }
     uniqueVisitors: { total: number; change: string }
@@ -336,6 +375,166 @@ export default function DashboardPage() {
               </table>
             </div>
           )}
+        </div>
+
+        {/* Search Opportunities & Device Performance */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Search Opportunities */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">🎯 Search Opportunities</h2>
+              <span className="text-xs text-gray-500">High potential keywords</span>
+            </div>
+            {stats.searchConsole.opportunities.length > 0 ? (
+              <div className="bg-white rounded-lg shadow overflow-hidden">
+                <div className="px-6 py-4 border-b border-gray-200 bg-blue-50">
+                  <p className="text-sm text-blue-900">
+                    <strong>Tip:</strong> These queries have high impressions but rank 10-30.
+                    Optimize content to move to top 5 positions!
+                  </p>
+                </div>
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Query</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Position</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Impressions</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Potential</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {stats.searchConsole.opportunities.map((opp, idx) => (
+                      <tr key={idx} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">{opp.query}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            #{opp.position}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{opp.impressions.toLocaleString()}</td>
+                        <td className="px-6 py-4 text-sm">
+                          <span className="text-green-600 font-medium">+{opp.potentialClicks} clicks</span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="bg-white rounded-lg shadow p-8 text-center text-gray-400">
+                <p>No opportunities yet</p>
+                <p className="text-xs mt-1">Opportunities will appear when you have search data</p>
+              </div>
+            )}
+          </div>
+
+          {/* Device Performance */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">📱 Device Performance</h2>
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="space-y-6">
+                {/* Desktop */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">💻 Desktop</span>
+                    <span className="text-sm text-gray-500">
+                      {stats.searchConsole.deviceBreakdown.desktop.clicks.toLocaleString()} clicks
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full"
+                      style={{
+                        width: `${Math.min(
+                          (stats.searchConsole.deviceBreakdown.desktop.clicks /
+                            (stats.searchConsole.deviceBreakdown.desktop.clicks +
+                              stats.searchConsole.deviceBreakdown.mobile.clicks +
+                              stats.searchConsole.deviceBreakdown.tablet.clicks || 1)) *
+                            100,
+                          100
+                        )}%`
+                      }}
+                    ></div>
+                  </div>
+                  <div className="mt-1 flex justify-between text-xs text-gray-500">
+                    <span>{stats.searchConsole.deviceBreakdown.desktop.impressions.toLocaleString()} impr.</span>
+                    <span>CTR: {stats.searchConsole.deviceBreakdown.desktop.ctr}%</span>
+                  </div>
+                </div>
+
+                {/* Mobile */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">📱 Mobile</span>
+                    <span className="text-sm text-gray-500">
+                      {stats.searchConsole.deviceBreakdown.mobile.clicks.toLocaleString()} clicks
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-600 h-2 rounded-full"
+                      style={{
+                        width: `${Math.min(
+                          (stats.searchConsole.deviceBreakdown.mobile.clicks /
+                            (stats.searchConsole.deviceBreakdown.desktop.clicks +
+                              stats.searchConsole.deviceBreakdown.mobile.clicks +
+                              stats.searchConsole.deviceBreakdown.tablet.clicks || 1)) *
+                            100,
+                          100
+                        )}%`
+                      }}
+                    ></div>
+                  </div>
+                  <div className="mt-1 flex justify-between text-xs text-gray-500">
+                    <span>{stats.searchConsole.deviceBreakdown.mobile.impressions.toLocaleString()} impr.</span>
+                    <span>CTR: {stats.searchConsole.deviceBreakdown.mobile.ctr}%</span>
+                  </div>
+                </div>
+
+                {/* Tablet */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm font-medium text-gray-700">📲 Tablet</span>
+                    <span className="text-sm text-gray-500">
+                      {stats.searchConsole.deviceBreakdown.tablet.clicks.toLocaleString()} clicks
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-purple-600 h-2 rounded-full"
+                      style={{
+                        width: `${Math.min(
+                          (stats.searchConsole.deviceBreakdown.tablet.clicks /
+                            (stats.searchConsole.deviceBreakdown.desktop.clicks +
+                              stats.searchConsole.deviceBreakdown.mobile.clicks +
+                              stats.searchConsole.deviceBreakdown.tablet.clicks || 1)) *
+                            100,
+                          100
+                        )}%`
+                      }}
+                    ></div>
+                  </div>
+                  <div className="mt-1 flex justify-between text-xs text-gray-500">
+                    <span>{stats.searchConsole.deviceBreakdown.tablet.impressions.toLocaleString()} impr.</span>
+                    <span>CTR: {stats.searchConsole.deviceBreakdown.tablet.ctr}%</span>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-gray-200">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Total Clicks</span>
+                    <span className="font-medium text-gray-900">
+                      {(
+                        stats.searchConsole.deviceBreakdown.desktop.clicks +
+                        stats.searchConsole.deviceBreakdown.mobile.clicks +
+                        stats.searchConsole.deviceBreakdown.tablet.clicks
+                      ).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
