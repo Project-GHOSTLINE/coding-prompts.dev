@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { isAuthenticated } from '@/lib/auth'
 import { getSEMrushData } from '@/lib/semrush'
+import { getSearchConsoleData } from '@/lib/google-search-console'
+import { getAnalyticsData } from '@/lib/google-analytics'
 
 export async function GET() {
   // Check authentication
@@ -10,12 +12,12 @@ export async function GET() {
   }
 
   try {
-    // Fetch REAL SEMrush data only
+    // Fetch REAL SEMrush data
     let semrushData
     try {
       semrushData = await getSEMrushData('coding-prompts.dev')
     } catch (error) {
-      // Return N/A if SEMrush fails
+      console.error('SEMrush error:', error)
       semrushData = {
         totalKeywords: 'N/A',
         avgPosition: 'N/A',
@@ -25,17 +27,44 @@ export async function GET() {
       }
     }
 
-    // Vercel Analytics - N/A (no API integration yet)
+    // Fetch REAL Google Search Console data
+    let searchConsoleData
+    try {
+      searchConsoleData = await getSearchConsoleData()
+    } catch (error) {
+      console.error('Google Search Console error:', error)
+      searchConsoleData = {
+        totalClicks: 'N/A',
+        totalImpressions: 'N/A',
+        avgCTR: 'N/A',
+        avgPosition: 'N/A',
+        topQueries: [],
+        topPages: []
+      }
+    }
+
+    // Fetch REAL Google Analytics 4 data
+    let analyticsData
+    try {
+      analyticsData = await getAnalyticsData(30)
+    } catch (error) {
+      console.error('Google Analytics error:', error)
+      analyticsData = {
+        pageViews: { total: 'N/A', change: 'N/A' },
+        uniqueVisitors: { total: 'N/A', change: 'N/A' },
+        avgSessionDuration: 'N/A',
+        bounceRate: 'N/A',
+        topPages: [],
+        topSources: [],
+        deviceBreakdown: { desktop: 0, mobile: 0, tablet: 0 }
+      }
+    }
+
+    // Use GA4 data for traffic (replacing Vercel Analytics)
     const vercelData = {
-      pageViews: {
-        total: 'N/A',
-        change: 'N/A'
-      },
-      uniqueVisitors: {
-        total: 'N/A',
-        change: 'N/A'
-      },
-      topPages: []
+      pageViews: analyticsData.pageViews,
+      uniqueVisitors: analyticsData.uniqueVisitors,
+      topPages: analyticsData.topPages
     }
 
     // AEO Test Results - N/A (manual testing only)
@@ -51,6 +80,8 @@ export async function GET() {
 
     return NextResponse.json({
       semrush: semrushData,
+      searchConsole: searchConsoleData,
+      analytics: analyticsData,
       vercel: vercelData,
       aeoTests
     })
