@@ -47,19 +47,16 @@ You'll need this guide if:
 <TerminalBlock
   title="Error output"
   variant="error"
-  copyText={`Error: Process exited with code 1
-Claude Code process terminated unexpectedly
-Exit code: 1`}
->
-```bash
-# Typical error output
+  content={`# Typical error output
 Error: Process exited with code 1
 
 # Or similar variations
 Claude Code process terminated unexpectedly
-Exit code: 1
-```
-</TerminalBlock>
+Exit code: 1`}
+  copyText={`Error: Process exited with code 1
+Claude Code process terminated unexpectedly
+Exit code: 1`}
+/>
 
 Additional symptoms:
 - Terminal shows error and immediately returns to prompt
@@ -108,16 +105,10 @@ claude code --check-permissions
 
 <TerminalBlock
   title="Permission check output"
-  copyText={`Checking file permissions...
+  content={`Checking file permissions...
 ✓ Config directory: accessible
 ✓ Cache directory: accessible`}
->
-```
-Checking file permissions...
-✓ Config directory: accessible
-✓ Cache directory: accessible
-```
-</TerminalBlock>
+/>
 
 If you see permission errors, reset:
 
@@ -133,18 +124,14 @@ claude code restart
 
 <TerminalBlock
   title="Successful startup"
-  copyText={`✓ Starting Claude Code...
-✓ Ready`}
->
-```bash
-# Try to start Claude Code
+  content={`# Try to start Claude Code
 claude code
 
 # You should see:
 # ✓ Starting Claude Code...
-# ✓ Ready
-```
-</TerminalBlock>
+# ✓ Ready`}
+  copyText={`claude code`}
+/>
 
 **If this worked:** You're done. Claude Code should start normally.
 **If it failed:** Proceed to Fix 2.
@@ -206,12 +193,8 @@ claude code --version
 
 <TerminalBlock
   title="Version verification"
-  copyText="claude-code version X.X.X"
->
-```
-claude-code version X.X.X
-```
-</TerminalBlock>
+  content="claude-code version X.X.X"
+/>
 
 **Step 6: Configure**
 ```bash

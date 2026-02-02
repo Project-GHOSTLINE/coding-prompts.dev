@@ -28,13 +28,10 @@ Use this guide when:
 
 <TerminalBlock
   title="Successful installation"
-  copyText="Claude Code version X.X.X"
->
-```bash
-claude code --version
-# Output: Claude Code version X.X.X
-```
-</TerminalBlock>
+  content={`claude code --version
+# Output: Claude Code version X.X.X`}
+  copyText="claude code --version"
+/>
 
 The command returns version information without errors.
 
@@ -43,15 +40,12 @@ The command returns version information without errors.
 <TerminalBlock
   title="Installation error"
   variant="error"
-  copyText="command not found: claude"
->
-```bash
-claude code --version
+  content={`claude code --version
 # Output: command not found: claude
 # or: zsh: command not found: claude
-# or: bash: claude: command not found
-```
-</TerminalBlock>
+# or: bash: claude: command not found`}
+  copyText="claude code --version"
+/>
 
 The shell cannot locate the Claude Code executable.
 
