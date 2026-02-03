@@ -2,18 +2,22 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Sidebar from '@/components/Sidebar/Sidebar'
-import MobileMenuButton from '@/components/Sidebar/MobileMenuButton'
+
+interface ApiEndpoint {
+  name: string
+  status: 'loading' | 'success' | 'failed'
+  error?: string
+}
 
 export default function DashboardPage() {
   const router = useRouter()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [data, setData] = useState({
-    visitors: 'N/A',
-    pageViews: 'N/A',
-    aiSessions: 'N/A',
-    organic: 'N/A'
-  })
+  const [endpoints, setEndpoints] = useState<ApiEndpoint[]>([
+    { name: 'SEMrush', status: 'loading' },
+    { name: 'Google Search Console', status: 'loading' },
+    { name: 'Google Analytics', status: 'loading' },
+    { name: 'AI Traffic', status: 'loading' },
+    { name: 'Content Performance', status: 'loading' }
+  ])
 
   useEffect(() => {
     fetch('/api/admin/stats')
@@ -24,18 +28,43 @@ export default function DashboardPage() {
         }
         return res.json()
       })
-      .then(json => {
-        if (json) {
-          setData({
-            visitors: json.vercel?.uniqueVisitors?.total || 'N/A',
-            pageViews: json.vercel?.pageViews?.total || 'N/A',
-            aiSessions: json.aiTraffic?.totalAISessions || 'N/A',
-            organic: json.searchConsole?.totalClicks || 'N/A'
-          })
+      .then(data => {
+        if (data) {
+          setEndpoints([
+            {
+              name: 'SEMrush',
+              status: data.semrush && data.semrush.totalKeywords !== 'N/A' ? 'success' : 'failed',
+              error: data.semrush?.totalKeywords === 'N/A' ? 'No data available' : undefined
+            },
+            {
+              name: 'Google Search Console',
+              status: data.searchConsole && data.searchConsole.totalClicks !== 'N/A' ? 'success' : 'failed',
+              error: data.searchConsole?.totalClicks === 'N/A' ? 'No data available' : undefined
+            },
+            {
+              name: 'Google Analytics',
+              status: data.analytics && data.analytics.pageViews?.total !== 'N/A' ? 'success' : 'failed',
+              error: data.analytics?.pageViews?.total === 'N/A' ? 'No data available' : undefined
+            },
+            {
+              name: 'AI Traffic',
+              status: data.aiTraffic && data.aiTraffic.totalAISessions > 0 ? 'success' : 'failed',
+              error: !data.aiTraffic || data.aiTraffic.totalAISessions === 0 ? 'No AI sessions detected' : undefined
+            },
+            {
+              name: 'Content Performance',
+              status: data.contentPerformance && data.contentPerformance.topPagesAI?.length > 0 ? 'success' : 'failed',
+              error: !data.contentPerformance || data.contentPerformance.topPagesAI?.length === 0 ? 'No data available' : undefined
+            }
+          ])
         }
       })
-      .catch(() => {
-        // Silently fail, keep N/A values
+      .catch(error => {
+        setEndpoints(prev => prev.map(ep => ({
+          ...ep,
+          status: 'failed',
+          error: 'API call failed'
+        })))
       })
   }, [router])
 
@@ -44,81 +73,102 @@ export default function DashboardPage() {
     router.push('/admin/login')
   }
 
+  const successCount = endpoints.filter(ep => ep.status === 'success').length
+  const failedCount = endpoints.filter(ep => ep.status === 'failed').length
+  const loadingCount = endpoints.filter(ep => ep.status === 'loading').length
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {sidebarOpen && (
-        <div onClick={() => setSidebarOpen(false)} className="fixed inset-0 bg-black/50 z-30 lg:hidden" />
-      )}
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+          <h1 className="text-xl font-bold">API Status Dashboard</h1>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 text-sm bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
 
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <MobileMenuButton onToggle={() => setSidebarOpen(!sidebarOpen)} />
-
-      <div className="flex-1 lg:ml-64">
-        <header className="bg-white shadow-sm border-b sticky top-0 z-20">
-          <div className="max-w-7xl mx-auto px-8 py-6 flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">Dashboard AEO</h1>
-            <button
-              onClick={handleLogout}
-              className="px-5 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg hover:from-blue-700 hover:to-purple-700"
-            >
-              Logout
-            </button>
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        {/* Summary */}
+        <div className="mb-8 flex gap-4">
+          <div className="flex-1 bg-white p-4 rounded-lg border">
+            <div className="text-sm text-gray-600 mb-1">Success</div>
+            <div className="text-2xl font-bold text-green-600">{successCount}</div>
           </div>
-        </header>
-
-        <main className="max-w-7xl mx-auto px-8 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="text-4xl mb-2">👥</div>
-              <div className="text-sm text-gray-600">Visitors</div>
-              <div className="text-3xl font-bold text-gray-900 mt-2">{data.visitors}</div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="text-4xl mb-2">👁️</div>
-              <div className="text-sm text-gray-600">Page Views</div>
-              <div className="text-3xl font-bold text-gray-900 mt-2">{data.pageViews}</div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="text-4xl mb-2">🤖</div>
-              <div className="text-sm text-gray-600">AI Sessions</div>
-              <div className="text-3xl font-bold text-gray-900 mt-2">{data.aiSessions}</div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="text-4xl mb-2">🔍</div>
-              <div className="text-sm text-gray-600">Organic Traffic</div>
-              <div className="text-3xl font-bold text-gray-900 mt-2">{data.organic}</div>
-            </div>
+          <div className="flex-1 bg-white p-4 rounded-lg border">
+            <div className="text-sm text-gray-600 mb-1">Failed</div>
+            <div className="text-2xl font-bold text-red-600">{failedCount}</div>
           </div>
-
-          <div className="mt-8 bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Quick Actions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <button
-                onClick={() => window.location.reload()}
-                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
-              >
-                🔄 Refresh Data
-              </button>
-              <a
-                href="/AEO-VERIFICATION.md"
-                target="_blank"
-                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
-              >
-                📄 AEO Report
-              </a>
-              <a
-                href="/AEO-TEST-RESULTS.md"
-                target="_blank"
-                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-center"
-              >
-                📊 Test Results
-              </a>
-            </div>
+          <div className="flex-1 bg-white p-4 rounded-lg border">
+            <div className="text-sm text-gray-600 mb-1">Loading</div>
+            <div className="text-2xl font-bold text-gray-400">{loadingCount}</div>
           </div>
-        </main>
+        </div>
+
+        {/* Endpoints List */}
+        <div className="bg-white rounded-lg border overflow-hidden">
+          <div className="px-6 py-4 bg-gray-50 border-b">
+            <h2 className="font-semibold">API Endpoints</h2>
+          </div>
+          <div className="divide-y">
+            {endpoints.map((endpoint, index) => (
+              <div key={index} className="px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition">
+                <div className="flex items-center gap-4">
+                  {endpoint.status === 'loading' && (
+                    <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+                  )}
+                  {endpoint.status === 'success' && (
+                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
+                      ✓
+                    </div>
+                  )}
+                  {endpoint.status === 'failed' && (
+                    <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs">
+                      ✗
+                    </div>
+                  )}
+                  <div>
+                    <div className="font-medium">{endpoint.name}</div>
+                    {endpoint.error && (
+                      <div className="text-sm text-red-500 mt-1">{endpoint.error}</div>
+                    )}
+                  </div>
+                </div>
+                <div>
+                  {endpoint.status === 'success' && (
+                    <span className="px-3 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
+                      Success
+                    </span>
+                  )}
+                  {endpoint.status === 'failed' && (
+                    <span className="px-3 py-1 text-xs font-medium bg-red-100 text-red-700 rounded-full">
+                      Failed
+                    </span>
+                  )}
+                  {endpoint.status === 'loading' && (
+                    <span className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
+                      Loading...
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="mt-6 flex gap-4">
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 text-sm bg-white border rounded-lg hover:bg-gray-50 transition"
+          >
+            🔄 Refresh
+          </button>
+        </div>
       </div>
     </div>
   )
