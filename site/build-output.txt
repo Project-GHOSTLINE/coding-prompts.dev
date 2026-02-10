@@ -1,0 +1,53 @@
+
+> coding-prompts-aeo@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings
+
+./node_modules/bcryptjs/index.js
+A Node.js module is loaded ('crypto' at line 32) which is not supported in the Edge Runtime.
+Learn More: https://nextjs.org/docs/messages/node-module-in-edge-runtime
+
+Import trace for requested module:
+./node_modules/bcryptjs/index.js
+./lib/auth.ts
+
+./node_modules/bcryptjs/index.js
+A Node.js API is used (setImmediate at line: 335) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/bcryptjs/index.js
+./lib/auth.ts
+
+./node_modules/bcryptjs/index.js
+A Node.js API is used (setImmediate at line: 336) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/bcryptjs/index.js
+./lib/auth.ts
+
+   Linting and checking validity of types ...
+
+./app/admin/dashboard/page.tsx
+158:6  Warning: React Hook useEffect has a missing dependency: 'fetchStats'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+Failed to compile.
+
+./app/admin/dashboard/page.tsx:210:9
+Type error: 'safeStats' implicitly has type 'any' because it does not have a type annotation and is referenced directly or indirectly in its own initializer.
+
+[0m [90m 208 |[39m[0m
+[0m [90m 209 |[39m   [90m// Ensure all required properties exist with safe defaults[39m[0m
+[0m[31m[1m>[22m[39m[90m 210 |[39m   [36mconst[39m safeStats [33m=[39m {[0m
+[0m [90m     |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 211 |[39m     [33m...[39mstats[33m,[39m[0m
+[0m [90m 212 |[39m     searchConsole[33m:[39m safeStats[33m.[39msearchConsole [33m||[39m {[0m
+[0m [90m 213 |[39m       totalClicks[33m:[39m [32m'N/A'[39m[33m,[39m[0m
+Next.js build worker exited with code: 1 and signal: null

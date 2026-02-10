@@ -1,8 +1,8 @@
 import { chromium } from 'playwright';
 
 const DASHBOARD_URL = 'https://coding-prompts.dev/admin';
-const LOGIN_EMAIL = 'admin@coding-prompts.dev';
-const LOGIN_PASSWORD = 'FredRosa%1978';
+const LOGIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@coding-prompts.dev';
+const LOGIN_PASSWORD = process.env.ADMIN_PASSWORD || 'your-password-here';
 
 async function testDashboard() {
   console.log('🚀 Starting Playwright test...\n');

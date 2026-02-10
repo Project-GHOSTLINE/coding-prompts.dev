@@ -106,7 +106,7 @@ SEMRUSH_API_KEY=0c83e99dd9e328d1c53035bd66c59e54
 # Admin credentials
 JWT_SECRET=votre-jwt-secret
 ADMIN_EMAIL=admin@coding-prompts.dev
-ADMIN_PASSWORD=FredRosa%1978
+ADMIN_PASSWORD=your-secure-password
 ```
 
 ### Pour Vercel (Production)
@@ -120,7 +120,7 @@ ADMIN_PASSWORD=FredRosa%1978
    - `SEMRUSH_API_KEY`: La clé SEMrush
    - `JWT_SECRET`: Un secret aléatoire sécurisé
    - `ADMIN_EMAIL`: admin@coding-prompts.dev
-   - `ADMIN_PASSWORD`: FredRosa%1978
+   - `ADMIN_PASSWORD`: your-secure-password
 
 ---
 
@@ -137,7 +137,7 @@ open http://localhost:3000/admin
 
 # Se connecter
 # Email: admin@coding-prompts.dev
-# Password: FredRosa%1978
+# Password: your-secure-password
 ```
 
 ### Avec Playwright

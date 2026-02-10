@@ -3,20 +3,29 @@ import { BetaAnalyticsDataClient } from '@google-analytics/data'
 const GA4_PROPERTY_ID = process.env.GA4_PROPERTY_ID
 const GOOGLE_SERVICE_ACCOUNT_JSON = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
 
-// Liste des moteurs AI à tracker
+// Liste des moteurs AI à tracker (referrers)
 const AI_ENGINES = {
   'chat.openai.com': 'ChatGPT',
   'chatgpt.com': 'ChatGPT',
   'claude.ai': 'Claude',
   'perplexity.ai': 'Perplexity',
   'gemini.google.com': 'Gemini',
-  'bard.google.com': 'Gemini (Bard)',
-  'bing.com/chat': 'Bing Copilot',
+  'bard.google.com': 'Gemini',
+  'bing.com/chat': 'Copilot',
+  'copilot.microsoft.com': 'Copilot',
   'you.com': 'You.com',
   'phind.com': 'Phind',
-  'poe.com': 'Poe',
-  'writesonic.com': 'Writesonic',
-  'jasper.ai': 'Jasper'
+  'poe.com': 'Poe'
+}
+
+// User-Agent patterns pour crawlers AI
+const AI_CRAWLER_PATTERNS = {
+  'ChatGPT': /ChatGPT|GPTBot|OpenAI/i,
+  'Claude': /Claude|Anthropic|ClaudeBot/i,
+  'Gemini': /Gemini|Bard|Google-Extended/i,
+  'Perplexity': /PerplexityBot|Perplexity/i,
+  'Copilot': /BingPreview|EdgeGPT/i,
+  'AI Crawler': /AI2Bot|YouBot/i
 }
 
 export interface AITrafficStats {
@@ -70,6 +79,18 @@ function categorizeReferrer(referrer: string): string | null {
 
   for (const [domain, engine] of Object.entries(AI_ENGINES)) {
     if (lowerReferrer.includes(domain)) {
+      return engine
+    }
+  }
+
+  return null
+}
+
+function categorizeUserAgent(userAgent: string): string | null {
+  if (!userAgent) return null
+
+  for (const [engine, pattern] of Object.entries(AI_CRAWLER_PATTERNS)) {
+    if (pattern.test(userAgent)) {
       return engine
     }
   }

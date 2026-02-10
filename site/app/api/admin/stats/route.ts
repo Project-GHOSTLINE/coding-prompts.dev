@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server'
 import { isAuthenticated } from '@/lib/auth'
-import { getSEMrushData } from '@/lib/semrush'
 import { getSearchConsoleData } from '@/lib/google-search-console'
 import { getAnalyticsData } from '@/lib/google-analytics'
 import { getAITrafficData } from '@/lib/ai-traffic-analytics'
 import { getContentPerformanceData } from '@/lib/content-performance'
+import { getAEOAnalytics } from '@/lib/aeo-analytics'
 
 export async function GET() {
   // Check authentication
@@ -14,21 +14,6 @@ export async function GET() {
   }
 
   try {
-    // Fetch REAL SEMrush data
-    let semrushData
-    try {
-      semrushData = await getSEMrushData('coding-prompts.dev')
-    } catch (error) {
-      console.error('SEMrush error:', error)
-      semrushData = {
-        totalKeywords: 'N/A',
-        avgPosition: 'N/A',
-        estimatedTraffic: 'N/A',
-        totalBacklinks: 'N/A',
-        topKeywords: []
-      }
-    }
-
     // Fetch REAL Google Search Console data
     let searchConsoleData
     try {
@@ -40,8 +25,20 @@ export async function GET() {
         totalImpressions: 'N/A',
         avgCTR: 'N/A',
         avgPosition: 'N/A',
+        previousPeriod: {
+          clicks: 0,
+          impressions: 0,
+          ctr: 0,
+          position: 0
+        },
         topQueries: [],
-        topPages: []
+        topPages: [],
+        opportunities: [],
+        deviceBreakdown: {
+          desktop: { clicks: 0, impressions: 0, ctr: 0 },
+          mobile: { clicks: 0, impressions: 0, ctr: 0 },
+          tablet: { clicks: 0, impressions: 0, ctr: 0 }
+        }
       }
     }
 
@@ -112,6 +109,28 @@ export async function GET() {
       topPages: analyticsData.topPages
     }
 
+    // Fetch AEO Analytics from Supabase
+    let aeoData
+    try {
+      aeoData = await getAEOAnalytics(30)
+    } catch (error) {
+      console.error('AEO Analytics error:', error)
+      aeoData = {
+        overview: {
+          totalAIVisits: 0,
+          totalCrawlers: 0,
+          totalReferrals: 0,
+          uniqueEngines: 0,
+          avgVisitsPerDay: 0,
+          growthRate: 0
+        },
+        byEngine: [],
+        timeline: [],
+        topPages: [],
+        crawlerActivity: []
+      }
+    }
+
     // AEO Test Results - N/A (manual testing only)
     const aeoTests = {
       lastTest: 'N/A',
@@ -124,12 +143,12 @@ export async function GET() {
     }
 
     return NextResponse.json({
-      semrush: semrushData,
       searchConsole: searchConsoleData,
       analytics: analyticsData,
       aiTraffic: aiTrafficData,
       contentPerformance: contentPerformanceData,
       vercel: vercelData,
+      aeo: aeoData,
       aeoTests
     })
   } catch (error) {

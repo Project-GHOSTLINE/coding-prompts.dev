@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-02-04T20:39:58.788Z",
+  "baseUrl": "http://localhost:3001",
+  "tests": [
+    {
+      "name": "Login Redirect",
+      "status": "PASS",
+      "details": "Redirected to: http://localhost:3001/admin/login",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/01-login-page.png"
+    },
+    {
+      "name": "Login Form Fill",
+      "status": "PASS",
+      "details": "Credentials entered",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/02-login-filled.png"
+    },
+    {
+      "name": "Login Success",
+      "status": "PASS",
+      "details": "Navigated to: http://localhost:3001/admin/dashboard",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/03-after-login.png"
+    },
+    {
+      "name": "Sidebar",
+      "status": "FAIL",
+      "details": "Sidebar not found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/04-dashboard-full.png"
+    },
+    {
+      "name": "Metric Cards",
+      "status": "FAIL",
+      "details": "No cards found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/04-dashboard-full.png"
+    },
+    {
+      "name": "SEMrush Section",
+      "status": "FAIL",
+      "details": "Section not found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/05-semrush-section.png"
+    },
+    {
+      "name": "SEMrush Table",
+      "status": "FAIL",
+      "details": "Table not found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/05-semrush-section.png"
+    },
+    {
+      "name": "Mobile Responsive",
+      "status": "CHECKED",
+      "details": "Mobile viewport screenshot captured",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/07-mobile-view.png"
+    },
+    {
+      "name": "Console Errors",
+      "status": "FAIL",
+      "details": "18 errors found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/04-dashboard-full.png"
+    }
+  ],
+  "issues": [
+    {
+      "severity": "HIGH",
+      "component": "Sidebar",
+      "description": "Sidebar element not found in DOM",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/04-dashboard-full.png"
+    },
+    {
+      "severity": "HIGH",
+      "component": "Metric Cards",
+      "description": "No metric cards found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/04-dashboard-full.png"
+    },
+    {
+      "severity": "HIGH",
+      "component": "SEMrush",
+      "description": "SEMrush section not found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/05-semrush-section.png"
+    },
+    {
+      "severity": "HIGH",
+      "component": "SEMrush Table",
+      "description": "Table element not found",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/05-semrush-section.png"
+    },
+    {
+      "severity": "CRITICAL",
+      "component": "Console Errors",
+      "description": "Found 18 console errors",
+      "screenshotPath": "/Users/xunit/Desktop/Projets/coding-prompts.dev/site/qa-screenshots/04-dashboard-full.png"
+    }
+  ],
+  "summary": {
+    "totalTests": 9,
+    "passed": 3,
+    "failed": 5,
+    "totalIssues": 5,
+    "criticalIssues": 1,
+    "highIssues": 4,
+    "mediumIssues": 0
+  }
+}

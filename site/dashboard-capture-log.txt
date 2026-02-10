@@ -1,0 +1,65 @@
+Step 1: Navigating to login page...
+[VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o
+  at http://localhost:3000/admin/login:0:0
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found)
+  at http://localhost:3000/_next/static/chunks/app/admin/login/page.js:0:0
+[ERROR] Refused to execute script from 'http://localhost:3000/_next/static/chunks/app/admin/login/page.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+  at http://localhost:3000/admin/login:0:0
+
+=== NETWORK FAILURE ===
+URL: http://localhost:3000/_next/static/chunks/app/admin/login/page.js
+Error: {"errorText":"net::ERR_ABORTED"}
+[INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+  at webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559:16
+Step 2: Taking screenshot of login page...
+Step 3: Attempting to login...
+Step 4: Submitting login form...
+[VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o
+  at http://localhost:3000/admin/login?:0:0
+[ERROR] Failed to load resource: the server responded with a status of 404 (Not Found)
+  at http://localhost:3000/_next/static/chunks/app/admin/login/page.js:0:0
+[ERROR] Refused to execute script from 'http://localhost:3000/_next/static/chunks/app/admin/login/page.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+  at http://localhost:3000/admin/login?:0:0
+
+=== NETWORK FAILURE ===
+URL: http://localhost:3000/_next/static/chunks/app/admin/login/page.js
+Error: {"errorText":"net::ERR_ABORTED"}
+[INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold
+  at webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559:16
+Step 5: Checking current URL after login...
+Current URL: http://localhost:3000/admin/login?
+Login failed or redirected elsewhere
+
+=== FINAL REPORT ===
+Total Console Messages: 8
+Console Errors: 4
+Console Warnings: 0
+Page Errors: 0
+Network Errors: 2
+
+=== ALL CONSOLE ERRORS ===
+
+--- Console Error 1 ---
+Failed to load resource: the server responded with a status of 404 (Not Found)
+Location: http://localhost:3000/_next/static/chunks/app/admin/login/page.js:0:0
+
+--- Console Error 2 ---
+Refused to execute script from 'http://localhost:3000/_next/static/chunks/app/admin/login/page.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+Location: http://localhost:3000/admin/login:0:0
+
+--- Console Error 3 ---
+Failed to load resource: the server responded with a status of 404 (Not Found)
+Location: http://localhost:3000/_next/static/chunks/app/admin/login/page.js:0:0
+
+--- Console Error 4 ---
+Refused to execute script from 'http://localhost:3000/_next/static/chunks/app/admin/login/page.js' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled.
+Location: http://localhost:3000/admin/login?:0:0
+
+=== Screenshots saved ===
+- screenshot-1-login-page.png
+- screenshot-2-login-filled.png
+- screenshot-3-after-login-submit.png
+- screenshot-4-dashboard-loaded.png (if login succeeded)
+- screenshot-5-dashboard-final.png (if login succeeded)
+
+=== Full report saved to CONSOLE-ERRORS-FULL-REPORT.json ===

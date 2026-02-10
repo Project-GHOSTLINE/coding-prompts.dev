@@ -46,9 +46,8 @@ export async function isAuthenticated(): Promise<boolean> {
   return session !== null && session.role === 'admin'
 }
 
-// Hardcoded admin credentials (secure in production with env vars)
+// Admin credentials (hash generated from secure password)
 export const ADMIN_CREDENTIALS = {
   email: 'admin@coding-prompts.dev',
-  // Password: FredRosa%1978
   passwordHash: '$2b$10$yZn7DsAJskR49jPqSEERdOQHF7H.Zi9vWyJ.q7K0b6bfgpwvyYk5y'
 }
