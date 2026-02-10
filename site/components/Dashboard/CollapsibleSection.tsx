@@ -11,6 +11,7 @@ interface CollapsibleSectionProps {
   summary: React.ReactNode
   children: React.ReactNode
   defaultOpen?: boolean
+  id?: string
 }
 
 export default function CollapsibleSection({
@@ -20,12 +21,13 @@ export default function CollapsibleSection({
   badge,
   summary,
   children,
-  defaultOpen = false
+  defaultOpen = false,
+  id
 }: CollapsibleSectionProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
 
   return (
-    <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
+    <div id={id} className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mb-8">
       {/* Header - Always Visible */}
       <div className="border-b border-gray-200">
         <button

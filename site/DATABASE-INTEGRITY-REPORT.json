@@ -1,0 +1,428 @@
+{
+  "timestamp": "2026-02-10T12:30:00Z",
+  "reportVersion": "1.0",
+  "status": "FAIL",
+  "summary": "Database integrity check found CRITICAL issues with environment variables. SQL schemas and queries are intact.",
+  "checksPerformed": {
+    "sqlSchemas": {
+      "status": "PASS",
+      "files": ["site/supabase-aeo-schema.sql"],
+      "tablesVerified": ["aeo_tracking"],
+      "indexesVerified": 6,
+      "viewsVerified": 3,
+      "functionsVerified": 1,
+      "rlsPoliciesVerified": 2
+    },
+    "queries": {
+      "status": "PASS",
+      "files": [
+        "site/lib/aeo-analytics.ts",
+        "site/lib/ai-traffic-analytics.ts",
+        "site/lib/google-analytics.ts",
+        "site/lib/google-search-console.ts",
+        "site/lib/content-performance.ts",
+        "site/lib/auth.ts",
+        "site/lib/aeo-testing.ts"
+      ],
+      "queriesVerified": 28,
+      "allQueriesComplete": true
+    },
+    "envVars": {
+      "status": "FAIL",
+      "file": "site/.env.local",
+      "variablesChecked": 11,
+      "issues": 1,
+      "criticalIssues": 1
+    },
+    "config": {
+      "status": "PASS",
+      "file": "site/next.config.js",
+      "complete": true,
+      "exportsValid": true
+    }
+  },
+  "issues": [
+    {
+      "id": "ENV-001",
+      "type": "env",
+      "file": "site/.env.local",
+      "severity": "high",
+      "line": "29-34",
+      "description": "Environment variable .env.local contains duplicate echo/cat commands that have been accidentally pasted multiple times (lines 29-34). These lines contain malformed command attempts instead of actual environment variable values.",
+      "snippet": " echo # GA4 Measurement ID (format G-XXXXXXXXXX) echo # Note: GA4_PROPERTY_ID=522638561 est l'ID numérique de la propriété echo # NEXT_PUBLIC_GA4_MEASUREMENT_ID devrait être au format G-XXXXXXXXXX echo # À récupérer depuis: https://analytics.google.com/analytics/web/#/a287508015w522638561p522638561/admin/streams/table/4608075103 echo NEXT_PUBLIC_GA4_MEASUREMENT_ID=G-XXXXXXXXXX  # À REMPLACER avec ton vrai Measurement ID cat /Users/xunit/Desktop/Projets/coding-prompts.dev/site/.env.local",
+      "recommendation": "Remove lines 29-34 from .env.local. These are duplicated shell command artifacts that should not be in the environment file. The actual GA4 Measurement ID variable declaration is correctly placed at line 40 as a comment, but needs to be uncommented and filled with the real value.",
+      "impact": "These malformed lines will be ignored by the environment loader but create confusion and clutter in the configuration file.",
+      "fixRequired": true
+    }
+  ],
+  "detailedAnalysis": {
+    "sqlSchemas": {
+      "supabase-aeo-schema.sql": {
+        "status": "PASS",
+        "lineCount": 225,
+        "structure": {
+          "tables": {
+            "aeo_tracking": {
+              "status": "COMPLETE",
+              "columns": 13,
+              "constraints": ["PRIMARY KEY", "CHECK (source_type IN ...)"],
+              "complete": true
+            }
+          },
+          "indexes": {
+            "idx_aeo_timestamp": "COMPLETE",
+            "idx_aeo_engine": "COMPLETE (partial)",
+            "idx_aeo_source_type": "COMPLETE",
+            "idx_aeo_page_path": "COMPLETE",
+            "idx_aeo_engine_timestamp": "COMPLETE (composite, partial)",
+            "idx_aeo_session_id": "COMPLETE (partial)"
+          },
+          "views": {
+            "aeo_by_engine": {
+              "status": "COMPLETE",
+              "selectFields": ["engine_name", "source_type", "total_visits", "unique_sessions", "unique_pages", "avg_duration", "avg_pages_per_visit", "engagement_rate", "last_visit"],
+              "aggregations": ["COUNT", "AVG", "DATE_TRUNC"],
+              "groupBy": ["engine_name", "source_type"],
+              "orderBy": ["total_visits DESC"]
+            },
+            "aeo_top_pages": {
+              "status": "COMPLETE",
+              "selectFields": ["page_path", "total_visits", "engines_count", "avg_duration", "avg_pages_viewed", "engagement_rate", "engines"],
+              "aggregations": ["COUNT", "AVG", "ARRAY_AGG"],
+              "filters": "source_type IN ('crawler', 'referral')",
+              "limit": 50
+            },
+            "aeo_daily_timeline": {
+              "status": "COMPLETE",
+              "selectFields": ["day", "source_type", "engine_name", "visits", "unique_sessions"],
+              "dateRange": "90 days",
+              "complete": true
+            }
+          },
+          "functions": {
+            "calculate_aeo_score": {
+              "status": "COMPLETE",
+              "parameters": ["target_page TEXT", "days INTEGER DEFAULT 30"],
+              "returnType": "TABLE",
+              "returnFields": ["page_path", "aeo_score", "ai_traffic", "organic_traffic", "ai_ratio", "avg_duration", "engagement_rate", "engines_count"],
+              "language": "plpgsql",
+              "complete": true
+            }
+          },
+          "rlsPolicies": {
+            "Allow anonymous insert": {
+              "status": "COMPLETE",
+              "operation": "INSERT",
+              "role": "anon",
+              "check": "true"
+            },
+            "Allow admin read": {
+              "status": "COMPLETE",
+              "operation": "SELECT",
+              "role": "authenticated",
+              "using": "true"
+            }
+          },
+          "testData": {
+            "status": "PRESENT",
+            "rows": 8,
+            "note": "Test data included for development (should be removed in production)"
+          }
+        },
+        "syntaxCheck": "PASS - All SQL statements are complete and properly terminated",
+        "issues": []
+      }
+    },
+    "queries": {
+      "aeo-analytics.ts": {
+        "status": "PASS",
+        "supabaseQueries": 5,
+        "functions": [
+          {
+            "name": "getOverviewMetrics",
+            "query": ".from('aeo_tracking').select('source_type, engine_name, timestamp').gte('timestamp', startDate.toISOString())",
+            "status": "COMPLETE",
+            "selectFields": ["source_type", "engine_name", "timestamp"],
+            "whereClause": "gte('timestamp', ...)",
+            "issues": []
+          },
+          {
+            "name": "getEngineStats",
+            "query": ".from('aeo_tracking').select('engine_name, source_type, page_path, session_duration, bounce, timestamp').gte('timestamp', ...).not('engine_name', 'is', null)",
+            "status": "COMPLETE",
+            "selectFields": ["engine_name", "source_type", "page_path", "session_duration", "bounce", "timestamp"],
+            "filters": ["gte('timestamp', ...)", "not('engine_name', 'is', null)"],
+            "issues": []
+          },
+          {
+            "name": "getTimeline",
+            "query": ".from('aeo_tracking').select('timestamp, source_type, engine_name').gte('timestamp', ...).order('timestamp', { ascending: true })",
+            "status": "COMPLETE",
+            "selectFields": ["timestamp", "source_type", "engine_name"],
+            "orderBy": "timestamp ASC",
+            "issues": []
+          },
+          {
+            "name": "getTopPages",
+            "query": ".from('aeo_tracking').select('page_path, source_type, engine_name').gte('timestamp', ...)",
+            "status": "COMPLETE",
+            "selectFields": ["page_path", "source_type", "engine_name"],
+            "issues": []
+          },
+          {
+            "name": "getCrawlerActivity",
+            "query": ".from('aeo_tracking').select('engine_name, page_path, timestamp').eq('source_type', 'crawler').gte('timestamp', ...).not('engine_name', 'is', null)",
+            "status": "COMPLETE",
+            "selectFields": ["engine_name", "page_path", "timestamp"],
+            "filters": ["eq('source_type', 'crawler')", "gte('timestamp', ...)", "not('engine_name', 'is', null)"],
+            "issues": []
+          }
+        ],
+        "issues": []
+      },
+      "ai-traffic-analytics.ts": {
+        "status": "PASS",
+        "gaQueries": 5,
+        "allQueriesComplete": true,
+        "functions": [
+          {
+            "name": "getAITrafficData - referrer analysis",
+            "apiCall": "analyticsDataClient.runReport",
+            "dimensions": ["sessionSource", "sessionMedium"],
+            "metrics": ["sessions", "screenPageViews", "averageSessionDuration", "bounceRate"],
+            "status": "COMPLETE"
+          },
+          {
+            "name": "getAITrafficData - previous period",
+            "apiCall": "analyticsDataClient.runReport",
+            "dimensions": ["sessionSource"],
+            "metrics": ["sessions"],
+            "status": "COMPLETE"
+          },
+          {
+            "name": "getAITrafficData - time series",
+            "apiCall": "analyticsDataClient.runReport",
+            "dimensions": ["date", "sessionSource"],
+            "metrics": ["sessions"],
+            "status": "COMPLETE"
+          },
+          {
+            "name": "getAITrafficData - landing pages",
+            "apiCall": "analyticsDataClient.runReport",
+            "dimensions": ["landingPage", "sessionSource"],
+            "metrics": ["sessions"],
+            "limit": 50,
+            "status": "COMPLETE"
+          }
+        ],
+        "issues": []
+      },
+      "google-analytics.ts": {
+        "status": "PASS",
+        "gaQueries": 5,
+        "allQueriesComplete": true,
+        "issues": []
+      },
+      "google-search-console.ts": {
+        "status": "PASS",
+        "gscQueries": 6,
+        "allQueriesComplete": true,
+        "functions": [
+          "getSearchConsoleData - overall stats",
+          "getSearchConsoleData - top queries",
+          "getSearchConsoleData - top pages",
+          "getSearchConsoleData - previous period queries",
+          "getSearchConsoleData - opportunities analysis",
+          "getSearchConsoleData - device breakdown",
+          "getSearchConsoleData - previous period overall"
+        ],
+        "allDimensionsComplete": true,
+        "issues": []
+      },
+      "content-performance.ts": {
+        "status": "PASS",
+        "gaQueries": 3,
+        "allQueriesComplete": true,
+        "issues": []
+      },
+      "auth.ts": {
+        "status": "PASS",
+        "note": "No database queries - uses JWT and bcrypt for authentication",
+        "envVarsUsed": ["JWT_SECRET"],
+        "issues": []
+      },
+      "aeo-testing.ts": {
+        "status": "PASS",
+        "note": "No database queries - uses external AI APIs (OpenAI, Anthropic, Google AI)",
+        "envVarsUsed": ["OPENAI_API_KEY", "ANTHROPIC_API_KEY", "GOOGLE_AI_API_KEY"],
+        "issues": []
+      }
+    },
+    "envVars": {
+      ".env.local": {
+        "status": "FAIL",
+        "variables": {
+          "JWT_SECRET": {
+            "status": "PASS",
+            "present": true,
+            "format": "base64 encoded string",
+            "length": 88,
+            "complete": true
+          },
+          "ADMIN_EMAIL": {
+            "status": "PASS",
+            "present": true,
+            "format": "email",
+            "value": "admin@coding-prompts.dev",
+            "complete": true
+          },
+          "ADMIN_PASSWORD": {
+            "status": "PASS",
+            "present": true,
+            "note": "Password is present (should be hashed in production)",
+            "complete": true
+          },
+          "NEXT_PUBLIC_SUPABASE_URL": {
+            "status": "PASS",
+            "present": true,
+            "format": "https URL",
+            "value": "https://dllyzfuqjzuhvshrlmuq.supabase.co",
+            "complete": true,
+            "validProtocol": true
+          },
+          "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+            "status": "PASS",
+            "present": true,
+            "format": "JWT token",
+            "length": 217,
+            "complete": true
+          },
+          "SUPABASE_SERVICE_ROLE_KEY": {
+            "status": "PASS",
+            "present": true,
+            "format": "JWT token",
+            "length": 217,
+            "complete": true
+          },
+          "GOOGLE_SERVICE_ACCOUNT_JSON": {
+            "status": "PASS",
+            "present": true,
+            "format": "JSON string",
+            "contains": ["type", "project_id", "private_key", "client_email", "auth_uri", "token_uri"],
+            "complete": true,
+            "privateKeyPresent": true
+          },
+          "GA4_PROPERTY_ID": {
+            "status": "PASS",
+            "present": true,
+            "format": "numeric ID",
+            "value": "522638561",
+            "complete": true
+          },
+          "MALFORMED_LINES_29_34": {
+            "status": "FAIL",
+            "severity": "high",
+            "description": "Lines 29-34 contain duplicate echo/cat command artifacts that were accidentally pasted 6 times",
+            "recommendation": "Delete these lines completely"
+          },
+          "NEXT_PUBLIC_GA4_MEASUREMENT_ID": {
+            "status": "WARNING",
+            "present": false,
+            "required": true,
+            "note": "This variable is commented out (line 40) and needs to be uncommented with the actual G-XXXXXXXXXX measurement ID from Google Analytics",
+            "recommendation": "Uncomment line 40 and replace G-XXXXXXXXXX with actual Measurement ID from GA4 dashboard"
+          }
+        },
+        "missingVariables": [
+          "NEXT_PUBLIC_GA4_MEASUREMENT_ID (commented out, needs actual value)"
+        ],
+        "truncatedVariables": [],
+        "malformedVariables": [
+          "Lines 29-34 (duplicate echo/cat commands)"
+        ]
+      },
+      ".env.example": {
+        "status": "PASS",
+        "note": "Template file is properly formatted with placeholder values",
+        "complete": true
+      }
+    },
+    "config": {
+      "next.config.js": {
+        "status": "PASS",
+        "lineCount": 103,
+        "structure": {
+          "imports": ["@next/mdx"],
+          "config": {
+            "pageExtensions": ["js", "jsx", "mdx", "ts", "tsx"],
+            "headers": "async function defined"
+          },
+          "exports": "module.exports = withMDX(nextConfig)"
+        },
+        "moduleExportsComplete": true,
+        "headerFunctionComplete": true,
+        "securityHeaders": [
+          "X-Frame-Options",
+          "X-Content-Type-Options",
+          "X-XSS-Protection",
+          "Referrer-Policy",
+          "Permissions-Policy",
+          "Content-Security-Policy",
+          "Cache-Control",
+          "X-Robots-Tag",
+          "X-AI-Friendly"
+        ],
+        "aeoOptimized": true,
+        "issues": []
+      }
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "action": "Fix .env.local malformed lines",
+      "description": "Remove duplicate echo/cat command lines (29-34) from site/.env.local",
+      "command": "Edit the file and delete lines 29-34 which contain malformed shell command artifacts"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Configure GA4 Measurement ID",
+      "description": "Uncomment and set NEXT_PUBLIC_GA4_MEASUREMENT_ID in .env.local with the actual G-XXXXXXXXXX value from Google Analytics",
+      "location": "site/.env.local line 40",
+      "howToFind": "Go to https://analytics.google.com/analytics/web/#/a287508015w522638561p522638561/admin/streams/table/4608075103 and copy the Measurement ID"
+    },
+    {
+      "priority": "LOW",
+      "action": "Review test data in SQL schema",
+      "description": "Consider removing test data INSERT statements (lines 175-189) from supabase-aeo-schema.sql before production deployment",
+      "location": "site/supabase-aeo-schema.sql lines 175-189"
+    }
+  ],
+  "verification": {
+    "filesAnalyzed": 12,
+    "totalLines": 2247,
+    "sqlStatements": 23,
+    "supabaseQueries": 5,
+    "googleAnalyticsQueries": 13,
+    "searchConsoleQueries": 7,
+    "environmentVariables": 11,
+    "configFiles": 1
+  },
+  "conclusion": {
+    "overallStatus": "FAIL",
+    "criticalIssues": 1,
+    "highPriorityIssues": 1,
+    "mediumPriorityIssues": 0,
+    "lowPriorityIssues": 1,
+    "sqlIntegrity": "EXCELLENT - All SQL schemas, queries, and database structures are complete and properly formed",
+    "codeIntegrity": "EXCELLENT - All TypeScript code with database queries is complete and properly structured",
+    "envIntegrity": "POOR - Environment file contains malformed lines that need to be cleaned up",
+    "configIntegrity": "EXCELLENT - Next.js configuration is complete and properly exported",
+    "actionRequired": "YES - Fix .env.local file immediately by removing malformed lines 29-34",
+    "deploymentReady": false,
+    "blockers": [
+      "Malformed lines in .env.local must be removed",
+      "NEXT_PUBLIC_GA4_MEASUREMENT_ID must be configured (optional but recommended for full GA4 functionality)"
+    ]
+  }
+}
