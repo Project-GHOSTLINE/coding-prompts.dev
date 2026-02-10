@@ -68,9 +68,7 @@ export const navigationSections: NavigationSection[] = [
     label: 'Tests AEO',
     icon: BeakerIcon,
     items: [
-      { href: '/admin/dashboard#aeo-tests', label: 'Citations AI' },
-      { href: '/AEO-VERIFICATION.md', label: 'Rapport AEO' },
-      { href: '/AEO-TEST-RESULTS.md', label: 'Résultats Tests' }
+      { href: '/admin/dashboard#aeo-tests', label: 'Citations AI' }
     ]
   },
   {

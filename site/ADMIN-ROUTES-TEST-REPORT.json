@@ -1,0 +1,253 @@
+{
+  "summary": {
+    "totalRoutes": 17,
+    "passed": 17,
+    "failed": 0,
+    "warnings": 0,
+    "testDuration": 41.771,
+    "timestamp": "2026-02-10T17:27:15.271Z"
+  },
+  "routes": [
+    {
+      "section": "Vue d'ensemble",
+      "name": "Dashboard Principal",
+      "url": "/admin/dashboard",
+      "status": "passed",
+      "statusCode": 200,
+      "loadTime": 5.899,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-01-dashboard-principal.png",
+      "timestamp": "2026-02-10T17:27:18.429Z"
+    },
+    {
+      "section": "Vue d'ensemble",
+      "name": "Statistiques Rapides",
+      "url": "/admin/dashboard#quick-stats",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 1.037,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-02-statistiques-rapides.png",
+      "timestamp": "2026-02-10T17:27:25.329Z"
+    },
+    {
+      "section": "SEO Performance",
+      "name": "Vue d'ensemble SEO",
+      "url": "/admin/dashboard#seo",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.922,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-03-vue-d-ensemble-seo.png",
+      "timestamp": "2026-02-10T17:27:27.368Z"
+    },
+    {
+      "section": "SEO Performance",
+      "name": "Top Keywords",
+      "url": "/admin/dashboard#keywords",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.932,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-04-top-keywords.png",
+      "timestamp": "2026-02-10T17:27:29.292Z"
+    },
+    {
+      "section": "SEO Performance",
+      "name": "Opportunités",
+      "url": "/admin/dashboard#opportunities",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.922,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-05-opportunit-s.png",
+      "timestamp": "2026-02-10T17:27:31.226Z"
+    },
+    {
+      "section": "SEO Performance",
+      "name": "Par Appareil",
+      "url": "/admin/dashboard#devices",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.914,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-06-par-appareil.png",
+      "timestamp": "2026-02-10T17:27:33.149Z"
+    },
+    {
+      "section": "Trafic AI",
+      "name": "Moteurs AI",
+      "url": "/admin/dashboard#ai-engines",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.91,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-07-moteurs-ai.png",
+      "timestamp": "2026-02-10T17:27:35.064Z"
+    },
+    {
+      "section": "Trafic AI",
+      "name": "Tendances",
+      "url": "/admin/dashboard#ai-trends",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.876,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-08-tendances.png",
+      "timestamp": "2026-02-10T17:27:36.975Z"
+    },
+    {
+      "section": "Trafic AI",
+      "name": "Pages Référées",
+      "url": "/admin/dashboard#ai-landing",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.903,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-09-pages-r-f-r-es.png",
+      "timestamp": "2026-02-10T17:27:38.853Z"
+    },
+    {
+      "section": "Trafic AI",
+      "name": "Ratio AI/Organic",
+      "url": "/admin/dashboard#ai-ratio",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.921,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-10-ratio-ai-organic.png",
+      "timestamp": "2026-02-10T17:27:40.757Z"
+    },
+    {
+      "section": "Performance Contenu",
+      "name": "AI vs Organic",
+      "url": "/admin/dashboard#content-comparison",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.913,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-11-ai-vs-organic.png",
+      "timestamp": "2026-02-10T17:27:42.680Z"
+    },
+    {
+      "section": "Performance Contenu",
+      "name": "Top Pages AI",
+      "url": "/admin/dashboard#top-pages-ai",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.923,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-12-top-pages-ai.png",
+      "timestamp": "2026-02-10T17:27:44.594Z"
+    },
+    {
+      "section": "Performance Contenu",
+      "name": "Top Pages Organic",
+      "url": "/admin/dashboard#top-pages-organic",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.908,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-13-top-pages-organic.png",
+      "timestamp": "2026-02-10T17:27:46.518Z"
+    },
+    {
+      "section": "Performance Contenu",
+      "name": "Métriques Engagement",
+      "url": "/admin/dashboard#engagement",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.926,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-14-m-triques-engagement.png",
+      "timestamp": "2026-02-10T17:27:48.427Z"
+    },
+    {
+      "section": "Tests AEO",
+      "name": "Citations AI",
+      "url": "/admin/dashboard#aeo-tests",
+      "status": "passed",
+      "statusCode": null,
+      "loadTime": 0.869,
+      "errors": [],
+      "warnings": [
+        "Content validation error: locator.isVisible: Error: strict mode violation: locator('h1').filter({ hasText: 'Dashboard AEO' }) resolved to 2 elements:\n    1) <h1 class=\"text-xl font-bold text-white hover:text-blue-400 transition-colors\">Dashboard AEO</h1> aka getByRole('link', { name: 'Dashboard AEO Analytics &' })\n    2) <h1 class=\"text-3xl lg:text-4xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent\">Dashboard AEO Pro</h1> aka getByRole('heading', { name: 'Dashboard AEO Pro' })\n\nCall log:\n\u001b[2m    - checking visibility of locator('h1').filter({ hasText: 'Dashboard AEO' })\u001b[22m\n"
+      ],
+      "screenshot": "route-15-citations-ai.png",
+      "timestamp": "2026-02-10T17:27:50.354Z"
+    },
+    {
+      "section": "Configuration",
+      "name": "Paramètres",
+      "url": "/admin/settings",
+      "status": "passed",
+      "statusCode": 200,
+      "loadTime": 1.39,
+      "errors": [],
+      "warnings": [
+        "Settings content not found"
+      ],
+      "screenshot": "route-16-param-tres.png",
+      "timestamp": "2026-02-10T17:27:52.225Z"
+    },
+    {
+      "section": "Configuration",
+      "name": "Configuration API",
+      "url": "/admin/api-config",
+      "status": "passed",
+      "statusCode": 200,
+      "loadTime": 1.425,
+      "errors": [],
+      "warnings": [],
+      "screenshot": "route-17-configuration-api.png",
+      "timestamp": "2026-02-10T17:27:54.616Z"
+    }
+  ],
+  "authentication": {
+    "success": true,
+    "duration": 1.79,
+    "errors": []
+  }
+}

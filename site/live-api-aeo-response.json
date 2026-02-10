@@ -1,0 +1,133 @@
+{
+  "overview": {
+    "totalAIVisits": 10,
+    "totalCrawlers": 5,
+    "totalReferrals": 5,
+    "uniqueEngines": 3,
+    "avgVisitsPerDay": 0,
+    "growthRate": 0
+  },
+  "byEngine": [
+    {
+      "engine": "ChatGPT",
+      "crawlerVisits": 2,
+      "referralVisits": 2,
+      "totalVisits": 4,
+      "uniquePages": 2,
+      "avgDuration": 245,
+      "bounceRate": 0,
+      "lastVisit": "2026-02-10T17:09:11.253Z",
+      "trend": "stable"
+    },
+    {
+      "engine": "Claude",
+      "crawlerVisits": 2,
+      "referralVisits": 2,
+      "totalVisits": 4,
+      "uniquePages": 2,
+      "avgDuration": 420,
+      "bounceRate": 0,
+      "lastVisit": "2026-02-10T17:09:11.324Z",
+      "trend": "stable"
+    },
+    {
+      "engine": "Perplexity",
+      "crawlerVisits": 1,
+      "referralVisits": 1,
+      "totalVisits": 2,
+      "uniquePages": 2,
+      "avgDuration": 0,
+      "bounceRate": 0,
+      "lastVisit": "2026-02-10T17:09:11.396Z",
+      "trend": "stable"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-02-10",
+      "crawlers": 5,
+      "referrals": 5,
+      "total": 10,
+      "topEngine": "Claude"
+    }
+  ],
+  "topPages": [
+    {
+      "path": "/test/crawler/chatgpt",
+      "aiVisits": 2,
+      "crawlerVisits": 2,
+      "referralVisits": 0,
+      "uniqueEngines": 1,
+      "topEngine": "ChatGPT",
+      "aeoScore": 12
+    },
+    {
+      "path": "/test/crawler/claude",
+      "aiVisits": 2,
+      "crawlerVisits": 2,
+      "referralVisits": 0,
+      "uniqueEngines": 1,
+      "topEngine": "Claude",
+      "aeoScore": 12
+    },
+    {
+      "path": "/test/referral/chatgpt",
+      "aiVisits": 2,
+      "crawlerVisits": 0,
+      "referralVisits": 2,
+      "uniqueEngines": 1,
+      "topEngine": "ChatGPT",
+      "aeoScore": 42
+    },
+    {
+      "path": "/test/referral/claude",
+      "aiVisits": 2,
+      "crawlerVisits": 0,
+      "referralVisits": 2,
+      "uniqueEngines": 1,
+      "topEngine": "Claude",
+      "aeoScore": 42
+    },
+    {
+      "path": "/test/crawler/perplexity",
+      "aiVisits": 1,
+      "crawlerVisits": 1,
+      "referralVisits": 0,
+      "uniqueEngines": 1,
+      "topEngine": "Perplexity",
+      "aeoScore": 9
+    },
+    {
+      "path": "/test/referral/perplexity",
+      "aiVisits": 1,
+      "crawlerVisits": 0,
+      "referralVisits": 1,
+      "uniqueEngines": 1,
+      "topEngine": "Perplexity",
+      "aeoScore": 39
+    }
+  ],
+  "crawlerActivity": [
+    {
+      "engine": "ChatGPT",
+      "visits": 2,
+      "pagesScanned": 1,
+      "lastScan": "2026-02-10T17:09:11.050Z",
+      "scanFrequency": "Multiple times/day"
+    },
+    {
+      "engine": "Claude",
+      "visits": 2,
+      "pagesScanned": 1,
+      "lastScan": "2026-02-10T17:09:11.136Z",
+      "scanFrequency": "Multiple times/day"
+    },
+    {
+      "engine": "Perplexity",
+      "visits": 1,
+      "pagesScanned": 1,
+      "lastScan": "2026-02-10T17:09:11.192Z",
+      "scanFrequency": "Multiple times/day"
+    }
+  ]
+}
