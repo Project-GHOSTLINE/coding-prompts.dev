@@ -36,7 +36,9 @@ export default function DonutChart({ data, title, centerText }: DonutChartProps)
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number) => `${value.toLocaleString()} (${((value / total) * 100).toFixed(1)}%)`}
+            formatter={(value: number | undefined) =>
+              value ? `${value.toLocaleString()} (${((value / total) * 100).toFixed(1)}%)` : ''
+            }
           />
           <Legend
             verticalAlign="bottom"
